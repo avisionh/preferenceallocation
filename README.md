@@ -13,3 +13,4 @@ in such a way that the total utility of all *x* people is maximised.
 - [The Stable Marriage Problem and School Choice](http://www.ams.org/publicoutreach/feature-column/fc-2015-03)
 - [Gale-Shapley algorithm](https://www.nobelprize.org/nobel_prizes/economic-sciences/laureates/2012/popular-economicsciences2012.pdf)
 - [matchingR](https://cran.r-project.org/web/packages/matchingR/vignettes/matchingR-intro.html)
+
