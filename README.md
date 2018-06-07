@@ -1,4 +1,9 @@
 # Preference Allocation
+
+***
+
+[![Travis-CI Build Status](https://travis-ci.org/avisionh/Preference-Allocation.svg?branch=master)](https://travis-ci.org/avisionh/Preference-Allocation)
+
 The problem we will tackle in this repository is of *preference allocation*/*one-sided matching*.
 
 In particular, consider that we have to assign *x* people to *y* sessions. For each of these *y* sessions,
