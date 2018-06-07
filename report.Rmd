@@ -16,11 +16,24 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
+# Load packages
+library(matchingR)
+library(readr)
+library(dplyr)
+library(tibble)
+library(DT)
+
+# Set random number generator so so results are replicable
+set.seed(1)
+
 # Turn off scientific notation
 options(scipen = 999)
 
+# Load data
+utility_students <- read_csv(file = "data/dummy_student_preferences.csv")
+
 # Load script doing algorithm so we can just call results in report
-source(scripts/main.R)
+source("scripts/main.R")
 ```
 
 # Introduction
@@ -29,9 +42,9 @@ source(scripts/main.R)
 (@) **DISCLAIMER:** The author is relatively new to the **Gale-Shapley algorithm** so would appreciate suggestions and tips.
 
 ## Historical Background: Stable marriage problem
-(@) The issue we will tackle in this project is popularised by the famous **stable marriage problem*.
+(@) The issue we will tackle in this project is popularised by the famous **stable marriage problem**.
 
-(@) At a high level, it asks the question of how a set of men and women should be matched whilst repecting each individual's preferences. This is summarised as follows:
+(@) At a high level, it asks the question of how a set of men and women should be matched whilst respecting each individual's preferences. This is summarised as follows:
 
 > Given *n* men and *n* women, where each person has ranked all members of the opposite sex in order of preference, marry the men and women together such that there are no pairs of men and women who would both rather marry each other over than their current allocated partners. When there are no such pairs of men and women, the set of marriages is deemed stable.
 
@@ -41,7 +54,7 @@ source(scripts/main.R)
 
 (@) Indeed in 2012, the Nobel Prize in Economic Sciences was awared to Lloyd Shapely and Alvin Roth for extending this work on the **stable marriage problem** in finding practical solutions to real-world issues such as assigning new doctors to hospitals, students to colleges, and human organ transplants to recipients. [^1]
 
-[^1]: Funnily enough, this was the introductory lecture your author received when starting his first year of BSc. Mathematics and Economics course at the London School of Economics and Political Science (LSE). [Sveriges Riksbank prize in Economic Sciences in Memory of Alfred Nobel 2012](https://www.nobelprize.org/nobel_prizes/economic-sciences/laureates/2012/popular-economicsciences2012.pdf)
+[^1]: This was the introductory lecture your author received when starting his first year of BSc. Mathematics and Economics course at the London School of Economics and Political Science (LSE). [Sveriges Riksbank prize in Economic Sciences in Memory of Alfred Nobel 2012](https://www.nobelprize.org/nobel_prizes/economic-sciences/laureates/2012/popular-economicsciences2012.pdf)
 
 ### Key Assumptions
 (@) Number of men is equal to the number of women.
@@ -49,20 +62,25 @@ source(scripts/main.R)
 (@) Each man and woman prefers being matched over being not matched. 
 
 ### How it Works
-(@) The **Gale-Shapley algorithm** involves a number of rounds/iterations: [^1]
+(@) The **Gale-Shapley algorithm** involves a number of rounds/iterations: [^2]
 
-    i. Each unengaged man proposes to the women he prefers most. 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Each woman replies *"maybe"* to her suitor she most prefers and *"no"* to all other suitors. She is then provisionally "engaged" to the suitor she most prefers thus far, and that suitor is likewise provisionally engaged to her.
+    i. Each unengaged man proposes to the women he prefers most. Each woman replies *"maybe"* to her suitor she most prefers and *"no"* to all other suitors. She is then provisionally "engaged" to the suitor she most prefers thus far, and that suitor is likewise provisionally engaged to her.
+    
     i. Each unengaged man then proposes to his most-preferred woman to whom he has not yet proposed (regardless of whether the woman is already engaged).
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Each woman replies *"maybe"* if she is currently not engaged or if she prefers this guy over her provisional partner. (In this case, she rejects her current provisional partner who becomes unengaged.)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; *The provisional nature of engagements prserves the right of an already-engaged woman to "trade-up" and in turn, "jilt" her until-then partner.
+    
+    + Each woman replies *"maybe"* if she is currently not engaged or if she prefers this guy over her provisional partner. (In this case, she rejects her current provisional partner who becomes unengaged.)
+    
+    + *The provisional nature of engagements prserves the right of an already-engaged woman to "trade-up" and in turn, "jilt" her until-then partner.
+    
     i. This process is repeated until everyone is engaged.
 
-[^1]: [Wikipedia: Stable marriage problem](https://en.wikipedia.org/wiki/Stable_marriage_problem)
+[^2]: [Wikipedia: Stable marriage problem](https://en.wikipedia.org/wiki/Stable_marriage_problem)
 
 (@) Following this method of de-centralised allocation (in the sense that the participants, the men and women, have their preferences driving their matches):
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **Everyone gets married:** All men must have proposed to a woman at some point, since a man will eventually propose to all women, if necessary. Whilst all women would have been proposed to, and consequently, be engaged to someone.
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **All marriages are stable:** Let Alice and Bob both be engaged, but not to each other. Upon completion of the algorithm, it is not possible for both Alice and Bob to prefer each other over their current partners. If Bob prefers Alice to his current partner, he must have proposed to Alice before he proposed to his current partner. If Alice accepted his proposal, yet is not married to him at the end, she must have dumped him for someone she likes more, and therefore doesn't like Bob more than her current partner. If Alice rejected his proposal, she was already with someone she liked more than Bob.
+
+    + **Everyone gets married:** All men must have proposed to a woman at some point, since a man will eventually propose to all women, if necessary. Whilst all women would have been proposed to, and consequently, be engaged to someone.
+
+    + **All marriages are stable:** Let Alice and Bob both be engaged, but not to each other. Upon completion of the algorithm, it is not possible for both Alice and Bob to prefer each other over their current partners. If Bob prefers Alice to his current partner, he must have proposed to Alice before he proposed to his current partner. If Alice accepted his proposal, yet is not married to him at the end, she must have dumped him for someone she likes more, and therefore doesn't like Bob more than her current partner. If Alice rejected his proposal, she was already with someone she liked more than Bob.
 
 ## Our problem
 (@) The problem we are tackling is the following scenario:
@@ -73,8 +91,9 @@ source(scripts/main.R)
 
     + Each delegate, $d_i$ where $i = 1, ..., n$, receives utility $u_{d_i}(s_j)$ from being matched to session $s_i$. 
     + Each session, $s_j$ where $j = 1, ..., m$, receives utility $u_{s_j}(d_j)=0$ from being matched to a delegate $d_j$. This means sessions are indifferent over which delegates attends.
-    + Each session can hold $p_k$ delegates, where $s_j = {p_1, ..., p_k}.  
+    + Each session can hold $p_k$ delegates, where $s_j = {p_1, ..., p_k}$.  
     + Each delegate, $d_i$, has a well defined preference ordering over all sessions: $u_{d_i}(s_j) \ge u_{d_i}(s_j')$
+
 ***
 
 ***

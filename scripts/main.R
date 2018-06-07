@@ -4,18 +4,8 @@
 # DESCRIPTION
 # This script does the main piece of analysis.
 
-# Load relevant packages
-library(matchingR)
-library(readr)
-library(dplyr)
-library(tibble)
-
-# Set seed so we can replicate our results
-set.seed(1)
-
-
 # Load in student preferences dummy data
-utility_students <- read_csv(file = "dummy_student_preferences.csv")
+# utility_students <- read_csv(file = "dummy_student_preferences.csv")
 utility_students <- utility_students %>% 
   remove_rownames %>% 
   column_to_rownames(var = "X1")
