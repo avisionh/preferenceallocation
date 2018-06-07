@@ -1,0 +1,25 @@
+---
+title: "Preference Allocation"
+author: "Avision Ho"
+date: "7 June 2018"
+output: 
+    html_document:
+    number_sections: false
+    theme: journal
+    highlight: haddock
+    code_folding: hide
+    fig_caption: true
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+
+# Turn off scientific notation
+options(scipen = 999)
+
+# Load script doing algorithm so we can just call results in report
+source(scripts/main.R)
+```
+
