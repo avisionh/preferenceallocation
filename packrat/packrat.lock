@@ -222,6 +222,12 @@ Source: CRAN
 Version: 0.4.8-1
 Hash: 6ad605ba7b4b476d84be6632393f5765
 
+Package: pander
+Source: CRAN
+Version: 0.6.1
+Hash: 53ae900957ee41a092509eb5f52d0cff
+Requires: Rcpp, digest
+
 Package: pillar
 Source: CRAN
 Version: 1.2.3
