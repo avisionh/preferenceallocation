@@ -17,6 +17,7 @@ output:
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
 # Load packages
+#install.packages('markdown')
 library(matchingR)
 library(readr)
 library(dplyr)
@@ -41,7 +42,7 @@ source("scripts/main.R")
 ## Author's Note
 (@) **DISCLAIMER:** The author is relatively new to the **Gale-Shapley algorithm** so would appreciate suggestions and tips.
 
-## Historical Background: Stable marriage problem
+## Section 1: Historical Background: Stable marriage problem
 (@) The issue we will tackle in this project is popularised by the famous **stable marriage problem**.
 
 (@) At a high level, it asks the question of how a set of men and women should be matched whilst respecting each individual's preferences. This is summarised as follows:
@@ -54,25 +55,25 @@ source("scripts/main.R")
 
 (@) Indeed in 2012, the Nobel Prize in Economic Sciences was awared to Lloyd Shapely and Alvin Roth for extending this work on the **stable marriage problem** in finding practical solutions to real-world issues such as assigning new doctors to hospitals, students to colleges, and human organ transplants to recipients. [^1]
 
-[^1]: This was the introductory lecture your author received when starting his first year of BSc. Mathematics and Economics course at the London School of Economics and Political Science (LSE). [Sveriges Riksbank prize in Economic Sciences in Memory of Alfred Nobel 2012](https://www.nobelprize.org/nobel_prizes/economic-sciences/laureates/2012/popular-economicsciences2012.pdf)
+[^1]: The [Sveriges Riksbank prize in Economic Sciences in Memory of Alfred Nobel 2012](https://www.nobelprize.org/nobel_prizes/economic-sciences/laureates/2012/popular-economicsciences2012.pdf) was the introductory lecture your author received when starting his first year of BSc. Mathematics and Economics course at the London School of Economics and Political Science (LSE). 
 
 ### Key Assumptions
 (@) Number of men is equal to the number of women.
 (@) Each man and woman has a well-defined preference ordering, meaning we know their preferences for each person.
 (@) Each man and woman prefers being matched over being not matched. 
 
-### How it Works
-(@) The **Gale-Shapley algorithm** involves a number of rounds/iterations: [^2]
+### How the stable marriage algorithm works
+(@) The **Gale-Shapley algorithm** for the **stable marriage problem** involves a number of rounds/iterations: [^2]
 
     i. Each unengaged man proposes to the women he prefers most. Each woman replies *"maybe"* to her suitor she most prefers and *"no"* to all other suitors. She is then provisionally "engaged" to the suitor she most prefers thus far, and that suitor is likewise provisionally engaged to her.
     
-    i. Each unengaged man then proposes to his most-preferred woman to whom he has not yet proposed (regardless of whether the woman is already engaged).
+    ii. Each unengaged man then proposes to his most-preferred woman to whom he has not yet proposed (regardless of whether the woman is already engaged).
     
     + Each woman replies *"maybe"* if she is currently not engaged or if she prefers this guy over her provisional partner. (In this case, she rejects her current provisional partner who becomes unengaged.)
     
-    + *The provisional nature of engagements prserves the right of an already-engaged woman to "trade-up" and in turn, "jilt" her until-then partner.
+    + The provisional nature of engagements prserves the right of an already-engaged woman to "trade-up" and in turn, "jilt" her until-then partner.
     
-    i. This process is repeated until everyone is engaged.
+    iii. This process is repeated until everyone is engaged.
 
 [^2]: [Wikipedia: Stable marriage problem](https://en.wikipedia.org/wiki/Stable_marriage_problem)
 
@@ -82,18 +83,59 @@ source("scripts/main.R")
 
     + **All marriages are stable:** Let Alice and Bob both be engaged, but not to each other. Upon completion of the algorithm, it is not possible for both Alice and Bob to prefer each other over their current partners. If Bob prefers Alice to his current partner, he must have proposed to Alice before he proposed to his current partner. If Alice accepted his proposal, yet is not married to him at the end, she must have dumped him for someone she likes more, and therefore doesn't like Bob more than her current partner. If Alice rejected his proposal, she was already with someone she liked more than Bob.
 
-## Our problem
+## Section 2: Our problem: Matching delegates to sessions
 (@) The problem we are tackling is the following scenario:
 
-> We have a number of delegates who have preferences over a range of sessions they wish to go to. They can only go to one session at any one time. Each session can only hold a certain number of people.
+> We have a *n* delegates who have preferences over *m* sessions they wish to go to. They can only go to one session at any one time. Each session can only hold varying numbers of people.
 
 (@) More formally, we have:
 
-    + Each delegate, $d_i$ where $i = 1, ..., n$, receives utility $u_{d_i}(s_j)$ from being matched to session $s_i$. 
+    + Each delegate, $d_i$ where $i = 1, ..., n$, receives utility $u_{d_i}(s_j)$ from being matched to session $s_j$. 
     + Each session, $s_j$ where $j = 1, ..., m$, receives utility $u_{s_j}(d_j)=0$ from being matched to a delegate $d_j$. This means sessions are indifferent over which delegates attends.
-    + Each session can hold $p_k$ delegates, where $s_j = {p_1, ..., p_k}$.  
-    + Each delegate, $d_i$, has a well defined preference ordering over all sessions: $u_{d_i}(s_j) \ge u_{d_i}(s_j')$
+    + Each delegate, $d_i$, has a well defined preference ordering over all sessions. For example, for delegate $d_i$ who has the choice of two sessions $s$ and $s'$, they prefer session $s$ over session $s'$ when $u_{d_i}(s) \ge u_{d_i}(s')$
+    + Each session, $s_j$, can hold $p_k$ delegates where $k \in \{1, ..., m\}$. 
+    + Note that $i$, $j$ and $k$ belong to the set of natural numbers. 
+    
+(@) Our problem differs from the **stable marriage** problem for three main reasons:
+    + Sessions have no preferences over which delegates attend them. We thus have one-sided matching.
+    + *Stability* here will be defined from the viewpoint of *pareto efficiency*. This is with respect to the fact for any matched pair $(d_i, s_j)$, there exists no session, $s_{j'}$, such that delegate $d_i$ will choose this without reducing the utility of another delegate, $d_{i'}$. [^3] 
+    + Each session can hold a varying number of people.
+    
+[^3]: In other words, a delegate, $d_i$, may gain more utility from attending a session, $s'$, different to the one they were matched with, $s$. However, this will come at the cost of reducing the utility of the delegate, $d_i'$ who was matched to the session the initial delegate, $d_i$, wanted to attend. $u_{d_i}(s') >  u_{d_i}(s)$ but $u_{d_i'}(s) < u_{d_i'}(s')$  
+
+(@) Given these subtle distinctions, then our problem most closely aligns to the **college admissions problem** which is a variant of the **stable marriage problem**.
+
+### How the college admissions algorithm works
+(@) The **Gale-Shapley algorithm** for the **college admissions problem** involves a number of rounds/iterations:
+    i. Students sequentially make proposals to each off their most preferred available colleges.
+    ii. A college can hold onto at most $s$ proposals at a time, since they have $s$ spaces for students.
+    iii. A college with an open slot will provisionally accept any application it receives.
+    iv. A college already holding $s$ applications will reject any student application that it values less than the current applicants they have provisionally accepted.
+    v. A college already holding $s$ applications will accept any student application that it values more than the current applicants they have provisionally accepted, and drop the least valued applicant they have currently provisionally accepted.
+    vi. Process continues until all students are matched to colleges.
+
+(@) For the technically inclined, the code for this algorithm can be viewed below:
+```{r College Admissions algorithm, echo = FALSE, include = TRUE}
+galeShapley.collegeAdmissions
+
+```
+
+### Data
+(@) For illustrative purposes, we will use dummy data.
+
+(@) In the data below, we can see that for *Person 1*, they strictly prefer *Session 2* over *Session 1*, $u_{d_1}(2) > u_{d_1}(1)$.
+
+```{r Data, echo = FALSE, include = TRUE}
+utility_students %>% 
+  datatable()
+```
+
 
 ***
+## Section : Environment
+(@) This analysis was conducted on a laptop with the specifications and packages outlined below.
+```{r Session, echo=FALSE}
+sessionInfo()
+```
 
 ***
