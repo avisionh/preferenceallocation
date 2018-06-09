@@ -1,0 +1,48 @@
+---
+title: "Preference Allocation"
+author: "Avision Ho"
+date: "9 June 2018"
+output: 
+  ioslides_presentation:
+    widescreen: true
+    transition: faster
+    mathjax: default
+    keep_md: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Preference Allocation | One-sided matching of delegates to sessions
+
+> - We have a *n* delegates who have preferences over *m* sessions they wish to go to. 
+
+> - Delegates can only go to one session at any one time. 
+
+> - Each session can only hold varying numbers of people.
+
+# Or more formally...
+
+## Defining the Problem
+
+> - Each delegate, $d_i for i = 1, ..., n$, receives utility $u_{d_i}(s_j)$ from being matched to session $s_j$
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Output
+
+```{r cars, echo = TRUE}
+summary(cars)
+```
+
+## Slide with Plot
+
+```{r pressure}
+plot(pressure)
+```
+
