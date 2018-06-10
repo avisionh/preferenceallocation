@@ -62,7 +62,7 @@ For example, for delegate $d_i$ who has the choice of two sessions $s$ and $s'$,
 
 > - Each session, $s_j$, can hold $p_k$ delegates where $k \in \{1, ..., m\}$. 
 
-<p style="font-size:10px;">
+<p style="font-size:15px;">
 Note that $i$, $j$ and $k$ belong to the set of natural numbers. 
 </p>
 
