@@ -2,3 +2,5 @@ packrat/lib*/
 .Rproj.user
 .Rhistory
 .Rprofile
+report.html
+slides.html

@@ -7,7 +7,7 @@
 # Load relevant packages
 library(matchingR)
 library(readr)
-library(dyplr)
+library(dplyr)
 library(tibble)
 
 # Set seed so we can replicate our results
