@@ -1,18 +1,20 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
-language: R
-r:
- - oldrel
- - release
- - devel
+language: r
+dist: trusty
 
-cache: packages
-sudo: false
+before_install:
+ - sudo mkdir -p /usr/lib/R/library
+ - echo 'R_LIBS=/usr/lib/R/library:/usr/lib/R/site-library/' > ~/.Renviron
+ - sudo chmod 2777 /usr/lib/R/library
 
-warnings_are_errrors: false
+install:
+- R -e "0" --args --bootstrap-packrat
 
 cache:
- directories:
-  -$TRAVIS_BUILD_DIR/packrat/src
-  -$TRAVIS_BUILD_DIR/lib
- packages: true
+  directories:
+  - "$TRAVIS_BUILD_DIR/packrat/src"
+  - "$TRAVIS_BUILD_DIR/packrat/lib"
+  packages: true
+
+
