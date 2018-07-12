@@ -13,21 +13,20 @@ library(tibble)
 # Set seed so we can replicate our results
 set.seed(1)
 
-
 # Load in student preferences dummy data
-utility_students <- read_csv(file = "dummy_student_preferences.csv")
-utility_students <- utility_students %>% 
+# utility_delegates <- read_csv(file = "data/dummy_student_preferences.csv")
+utility_delegates <- utility_delegates %>% 
   remove_rownames %>% 
   column_to_rownames(var = "X1")
 
 # Set colleges to have no preferences
-n_students <- ncol(utility_students)
-n_colleges <- nrow(utility_students)
+n_delegates <- ncol(utility_delegates)
+m_sessions <- nrow(utility_delegates)
 
-utility_colleges <- matrix(data = rep(x = 0, times = n_students*n_colleges), 
-                          nrow = n_students, 
-                          ncol = n_colleges)
-utility_colleges <- utility_colleges %>% 
+utility_sessions <- matrix(data = rep(x = 0, times = n_delegates*m_sessions), 
+                          nrow = n_delegates, 
+                          ncol = m_sessions)
+utility_sessions <- utility_sessions %>% 
   as.tibble() %>% 
   rename(`College 1` = V1,
          `College 2` = V2,
@@ -36,7 +35,7 @@ utility_colleges <- utility_colleges %>%
   
 
 # student-optimal matching
-results <- galeShapley.collegeAdmissions(studentUtils = utility_students, 
-                                         collegeUtils = utility_colleges, 
+results <- galeShapley.collegeAdmissions(studentUtils = utility_delegates, 
+                                         collegeUtils = utility_sessions, 
                                          slots = c(2, 1, 1, 2))
 

@@ -4,3 +4,6 @@ packrat/lib*/
 .Rprofile
 report.html
 slides.html
+slides.md
+slides.Rpres
+
