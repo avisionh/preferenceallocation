@@ -1,3 +1,3 @@
 #!/usr/bin/env Rscript
 
-rmarkdown::render("slides.Rmd")
+Rscript -e 'rmarkdown::render("slides.Rmd")'
