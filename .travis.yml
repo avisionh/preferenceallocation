@@ -1,16 +1,12 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: r
+sudo: required
 cache:
   directories:
   - "$TRAVIS_BUILD_DIR/packrat/src"
   - "$TRAVIS_BUILD_DIR/packrat/lib"
   packages: true
-
-before_install:
- - sudo mkdir -p /usr/lib/R/library
- - echo 'R_LIBS=/usr/lib/R/library:/usr/lib/R/site-library/' > ~/.Renviron
- - sudo chmod 2777 /usr/lib/R/library
 
 git:
   depth: 3
@@ -18,6 +14,13 @@ git:
 env:
   global:
     - secure: GITHUB_PAT
+
+r_packages:
+ - matchingR
+ - readr
+ - dplyr
+ - tibble
+ - DT
 
 install:
 - R -e "0" --args --bootstrap-packrat
