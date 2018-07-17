@@ -50,7 +50,7 @@ Requires: DBI
 Package: RSQLite
 Source: CRAN
 Version: 2.1.1
-Hash: 852ac7bf0f883df4514cdc445b1ac068
+Hash: bb9ff3ac4a8baecbbf9ea188b76fcc8b
 Requires: BH, DBI, Rcpp, bit64, blob, memoise, pkgconfig, plogr
 
 Package: Rcpp
@@ -86,7 +86,7 @@ Hash: 76578c5f543a6ecbc1365d6445f9ebf7
 Package: bindrcpp
 Source: CRAN
 Version: 0.2.2
-Hash: 826c616fa58feaae4a621de4ba95dc2c
+Hash: 557f908819df9f67af5dc93f501610ab
 Requires: Rcpp, bindr, plogr
 
 Package: bit
@@ -181,7 +181,7 @@ Hash: 1f202ebd812ac7192be3739245746a13
 Package: dplyr
 Source: CRAN
 Version: 0.7.6
-Hash: 468de67ff315333ee9b49118675d5a0d
+Hash: 8c1063395335450e2fdb82fd9c985b6c
 Requires: BH, R6, Rcpp, assertthat, bindrcpp, glue, magrittr,
     pkgconfig, plogr, rlang, tibble, tidyselect
 
@@ -366,6 +366,7 @@ Hash: 0dda4a2654a22b36a715c2b0b6fbacac
 Package: plogr
 Source: CRAN
 Version: 0.2.0
+Hash: 81a8008a5e7858552503935f1abe48aa
 
 Package: plyr
 Source: CRAN
