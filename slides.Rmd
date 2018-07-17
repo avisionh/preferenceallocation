@@ -14,13 +14,11 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 
 # Load packages
-#install.packages('markdown')
 library(matchingR)
 library(readr)
 library(dplyr)
 library(tibble)
 library(DT)
-#library(pander)
 
 # Set random number generator so so results are replicable
 set.seed(1)
