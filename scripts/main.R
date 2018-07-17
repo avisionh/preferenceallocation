@@ -10,11 +10,14 @@ library(readr)
 library(dplyr)
 library(tibble)
 
+# Load custom functions
+source('functions.R')
+
 # Set seed so we can replicate our results
 set.seed(1)
 
 # Load in student preferences dummy data
-# utility_delegates <- read_csv(file = "data/dummy_student_preferences.csv")
+utility_delegates <- read_csv(file = "data/dummy_student_preferences.csv")
 utility_delegates <- utility_delegates %>% 
   remove_rownames %>% 
   column_to_rownames(var = "X1")
@@ -34,8 +37,17 @@ utility_sessions <- utility_sessions %>%
          `College 4` = V4)
   
 
-# student-optimal matching
-results <- galeShapley.collegeAdmissions(studentUtils = utility_delegates, 
-                                         collegeUtils = utility_sessions, 
-                                         slots = c(2, 1, 1, 2))
+# Student-optimal matching
+
+# Approach 1 - Gale-Shapley
+results_galeshapley <- galeShapley.collegeAdmissions(
+  studentUtils = utility_delegates,
+  collegeUtils = utility_sessions,
+  slots = c(2, 1, 1, 2)
+)
+# Approach 2 - Iterative Preferences
+results_iterativepreference <- func_iterative_preferences(x = utility_delegates, limits = c(2, 1, 1, 2), with_replacement = FALSE)
+ # convert matchings to dataframe
+results_iterativepreference[[1]] <- results_iterativepreference[[1]] %>% as.data.frame()
+
 

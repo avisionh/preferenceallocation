@@ -52,16 +52,19 @@ func_sample <- function(x, n, replacement) {
 # ARGUMENTS:
   # 1. 'x' | (tibble/dataframe) Data to feed in
   # 2. 'limits' | (tibble/dataframe) Maximum capacity of each session
-func_iterative_preferences <- function(x, limits) {
+func_iterative_preferences <- function(x, limits, with_replacement) {
   
   # create empty list for storing output
   matchings <- list()
+  
+  # convert limits from vector to tibble
+  limits <- limits %>% as.tibble()
   
   # get number of people
   n_people <- ncol(x)
   # generate vector of people and random sample from it
   people <- seq(from = 1, to = n_people, by = 1)
-  sample_people <- func_sample(x = people, n = n_people)
+  sample_people <- func_sample(x = people, n = n_people, replacement = with_replacement)
   
   # Run for each person
   for (i in 1:ncol(x)) {
@@ -79,13 +82,13 @@ func_iterative_preferences <- function(x, limits) {
       preferred_session <- which(select_person == nth_most_preferred)
       
       # check if preferred session is available
-      if(limits[preferred_session] > 0) {
+      if(limits[preferred_session,] > 0) {
         
         # assign person number to session number
         matchings[[i]] <- c(colnames(select_person), preferred_session)
         
         # remove a place from session that's been allocated
-        limits[1, preferred_session] <- limits[1, preferred_session] - 1
+        limits[preferred_session, 1] <- limits[preferred_session, 1] - 1
         
         # break out of inner loop since as we have allocated person to session
         break
