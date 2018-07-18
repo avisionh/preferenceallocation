@@ -16,13 +16,11 @@ env:
     - secure: GITHUB_PAT
 
 r_packages:
- - devtools
  - matchingR
  - readr
  - dplyr
  - tibble
  - DT
- - futile.logger
 
 install:
 - R -e "0" --args --bootstrap-packrat
