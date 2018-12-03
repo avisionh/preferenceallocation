@@ -78,6 +78,8 @@ func_iterative_preferences <- function(x, limits, with_replacement) {
       # n-th largest value for selected person
       nth_most_preferred <- func_nth_largest(x = select_person[[1]], n = j)
       
+      # dummy change
+      
       # return row number with n-th most preferred session
       preferred_session <- which(select_person == nth_most_preferred)
       
