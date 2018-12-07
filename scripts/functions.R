@@ -66,38 +66,42 @@ func_iterative_preferences <- function(x, limits, with_replacement) {
   people <- seq(from = 1, to = n_people, by = 1)
   sample_people <- func_sample(x = people, n = n_people, replacement = with_replacement)
   
+  # take transpose of data
+  x <- x %>% t()
+  
   # Run for each person
-  for (i in 1:ncol(x)) {
+  for (i in 1:nrow(x)) {
     
     # choose i-th person in random sample of people
-    select_person <- select(.data = x, sample_people[i])
+    select_person <- x[sample_people[i], ]
     
     # Run for each preference if their session is full
-    for (j in 1:nrow(x)) {
+    for (j in 1:ncol(x)) {
       
       # n-th largest value for selected person
-      nth_most_preferred <- func_nth_largest(x = select_person[[1]], n = j)
+      nth_most_preferred <- func_nth_largest(x = select_person, n = j)
       
-      # dummy change
-      
-      # return row number with n-th most preferred session
-      preferred_session <- which(select_person == nth_most_preferred)
+      # return column number with n-th most preferred session
+      preferred_session <- which(select_person == nth_most_preferred)[[1]]
       
       # check if preferred session is available
       if(limits[preferred_session,] > 0) {
         
         # assign person number to session number
-        matchings[[i]] <- c(colnames(select_person), preferred_session)
+        matchings[[i]] <- c(rownames(x)[sample_people[i]], preferred_session)
         
         # remove a place from session that's been allocated
         limits[preferred_session, 1] <- limits[preferred_session, 1] - 1
+        
+        # if session is now full, assign 0 to all its preference values
+        if(limits[preferred_session,] == 0) {x[, preferred_session] <- 0}
         
         # break out of inner loop since as we have allocated person to session
         break
       } #if
       
     } #inner loop
-  
+    
   } #outer loop
   
   # store output in list as have multiple objects
