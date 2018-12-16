@@ -1,8 +1,7 @@
 # Preference Allocation
-
-***
-
 [![Travis-CI Build Status](https://travis-ci.org/avisionh/Preference-Allocation.svg?branch=master)](https://travis-ci.org/avisionh/Preference-Allocation)
+[Avision Ho](https://github.com/avisionh)
+[Le Duong](https://github.com/ledu1993)
 
 # Update
 - The latest development of this project is to build a Shiny app.
@@ -23,8 +22,8 @@ in such a way that the total utility of all *x* people is maximised.
 
 # Methodology
 We will tackle this problem in two ways:
-1. Gale-Shapley Algorithm **|** Implementation of Alvin Roth and Lloyd Shapley's algorithm that assigns delegates to sessions in random order by accounting for both their preferences and ensuring that no two matching pairs will mutually want to switch their matches.
-2. Iterative Preference **|** Implementation of a method suggested by a work experience student, Fatma Hussain, this takes chooses delegates and assigns them their n-th most preferred session provided the session is available. 
+1. **Gale-Shapley Algorithm |** Implementation of Alvin Roth and Lloyd Shapley's algorithm that assigns delegates to sessions in random order by accounting for both their preferences and ensuring that no two matching pairs will mutually want to switch their matches.
+2. **Iterative Preference |** Implementation of a method suggested by a work experience student, Fatma Hussain, this takes chooses delegates and assigns them their n-th most preferred session provided the session is available. 
 ***
 
 ## References
