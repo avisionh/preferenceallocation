@@ -5327,7 +5327,7 @@ padding-right: inherit;
 
 </article></slide><slide class="segue dark nobackground level1"><hgroup class = 'auto-fadein'><h2>Or more formally…</h2></hgroup><article  id="or-more-formally">
 
-</article></slide><slide class=""><hgroup><h2>Defining the Problem</h2></hgroup><article  id="defining-the-problem" class="smaller">
+</article></slide><slide class=""><hgroup><h2>Defining the Problem</h2></hgroup><article  class="smaller" id="defining-the-problem">
 
 <ul class = 'build'>
 <li>Each delegate, \(d_i\) for \(i = 1, ..., n\), receives utility \(u_{d_i}(s_j)\) from being matched to session <b> \(s_j\) </b></li>
@@ -5359,7 +5359,7 @@ Note that \(i\), \(j\) and \(k\) belong to the set of natural numbers.
 <pre >- Gale-Shapley algorithm
 - Iterative Preference algorithm</pre>
 
-</article></slide><slide class=""><hgroup><h2>Background </h2><h3> Nobel Prize for Economics 2012</h3></hgroup><article  id="background-nobel-prize-for-economics-2012" class="smaller">
+</article></slide><slide class=""><hgroup><h2>Background </h2><h3> Nobel Prize for Economics 2012</h3></hgroup><article  class="smaller" id="background-nobel-prize-for-economics-2012">
 
 <ul class = 'build'>
 <li>The issue we will tackle in this project is popularised by the famous <strong>stable marriage problem</strong>.</li>
@@ -5368,7 +5368,7 @@ Note that \(i\), \(j\) and \(k\) belong to the set of natural numbers.
 <li>The Nobel Prize in Economic Sciences 2012 was awared to Lloyd Shapely and Alvin Roth for extending this work in areas such as assigning new doctors to hospitals, students to colleges, and human organ transplants to recipients. <a id="fnref2" href="#fn2"><sup>2</sup></a></li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Key Assumptions</h2></hgroup><article  id="key-assumptions" class="smaller">
+</article></slide><slide class=""><hgroup><h2>Key Assumptions</h2></hgroup><article  class="smaller" id="key-assumptions">
 
 <p>Key assumptions to our problem and the <strong>stable marriage problem</strong> are:</p>
 
@@ -5388,7 +5388,7 @@ Note that \(i\), \(j\) and \(k\) belong to the set of natural numbers.
 <li>Each session can hold a varying number of people.</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>How it Works </h2><h3> Gale-Shapley algorithm</h3></hgroup><article  id="how-it-works-gale-shapley-algorithm" class="smaller">
+</article></slide><slide class=""><hgroup><h2>How it Works </h2><h3> Gale-Shapley algorithm</h3></hgroup><article  class="smaller" id="how-it-works-gale-shapley-algorithm">
 
 <p>The <strong>Gale-Shapley algorithm</strong> for the <strong>college admissions problem</strong> involves a number of rounds:</p>
 
@@ -5441,7 +5441,7 @@ Note that \(i\), \(j\) and \(k\) belong to the set of natural numbers.
 <li>Given we have 6 delegates to allocate to sessions, we will not get any unmatched delegates to sessions.</li>
 </ul>
 
-</article></slide><slide class=""><hgroup><h2>Analysis Approach 1 - Gale-Shapley</h2></hgroup><article  id="analysis-approach-1---gale-shapley" class="smaller">
+</article></slide><slide class=""><hgroup><h2>Analysis Approach 1 - Gale-Shapley</h2></hgroup><article  class="smaller" id="analysis-approach-1---gale-shapley">
 
 <p>In the code below, we will run the college admissions variant of the <strong>Gale-Shapley algorithm</strong>.</p>
 
@@ -5457,7 +5457,7 @@ Note that \(i\), \(j\) and \(k\) belong to the set of natural numbers.
 For instance, `Person 1` and `Person 4` are allocated to Session 1 and Session 2 respectively. 
 </div>
 
-</article></slide><slide class=""><hgroup><h2>Algorithm’s Output</h2></hgroup><article  id="algorithms-output" class="smaller">
+</article></slide><slide class=""><hgroup><h2>Algorithm’s Output</h2></hgroup><article  class="smaller" id="algorithms-output">
 
 <p>In the first output is the matched allocations from using the <strong>Gale-Shapley algorithm</strong>.</p>
 
@@ -5469,7 +5469,7 @@ For instance, `Person 1` and `Person 4` are allocated to Session 1 and Session 2
 <div id="htmlwidget-0361de577b997e2fd3ab" style="width:100%;height:auto;" class="datatables html-widget"></div>
 <script type="application/json" data-for="htmlwidget-0361de577b997e2fd3ab">{"x":{"filter":"none","data":[["Session 1","Session 2","Session 3","Session 4"],[10,40,30,20],[30,10,20,40],[30,20,40,10],[20,40,10,30],[10,20,40,30],[10,30,40,20]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Person 1<\/th>\n      <th>Person 2<\/th>\n      <th>Person 3<\/th>\n      <th>Person 4<\/th>\n      <th>Person 5<\/th>\n      <th>Person 6<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 
-</article></slide><slide class=""><hgroup><h2>Analysis Approach 2 - Iterative Preferences</h2></hgroup><article  id="analysis-approach-2---iterative-preferences" class="smaller">
+</article></slide><slide class=""><hgroup><h2>Analysis Approach 2 - Iterative Preferences</h2></hgroup><article  class="smaller" id="analysis-approach-2---iterative-preferences">
 
 <p>In the code below, we will run Fatma’s suggested algorithm, <strong>Iterative Preferences</strong> against the initial preferences of delegates to check that our matchings are desirable.</p>
 
@@ -5485,7 +5485,7 @@ For instance, `Person 1` and `Person 4` are allocated to Session 1 and Session 2
 For instance, Person 2 and Person 4 are allocated to Session 4 and Session 2 respectively. 
 </div>
 
-</article></slide><slide class=""><hgroup><h2>Algorithm’s Output</h2></hgroup><article  id="algorithms-output-1" class="smaller">
+</article></slide><slide class=""><hgroup><h2>Algorithm’s Output</h2></hgroup><article  class="smaller" id="algorithms-output-1">
 
 <p>In the first output is the matched allocations from using the <strong>Iterative Preferences algorithm</strong>.</p>
 
