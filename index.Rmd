@@ -24,7 +24,7 @@ library(DT)
 set.seed(1)
 
 # Load data - note are moving up one directory
-utility_delegates <- read_csv(file = "../data/dummy_student_preferences.csv")
+utility_delegates <- read_csv(file = "data/dummy_student_preferences.csv")
 
 # Import source code
 source("scripts/main.R")

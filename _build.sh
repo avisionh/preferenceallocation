@@ -1,3 +1,3 @@
 #!/usr/bin/env Rscript
 
-rmarkdown::render("docs/index.Rmd")
+rmarkdown::render("index.Rmd")
