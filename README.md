@@ -4,6 +4,15 @@
 
 [![Travis-CI Build Status](https://travis-ci.org/avisionh/Preference-Allocation.svg?branch=master)](https://travis-ci.org/avisionh/Preference-Allocation)
 
+# Update
+- The latest development of this project is to build a Shiny app.
+- The project management and code development of this stage will be captured on Azure DevOps owing to its superior project management capabilities.
+- The link to this can be found on the [Azure DevOps public project, Preference Allocation, page](https://avisionh.visualstudio.com/Preference%20Allocation)
+
+***
+
+# Motivation
+
 The problem we will tackle in this repository is of *preference allocation*/*one-sided matching*.
 
 In particular, consider that we have to assign *x* people to *y* sessions. For each of these *y* sessions,
