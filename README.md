@@ -2,8 +2,10 @@
 [![Travis-CI Build Status](https://travis-ci.org/avisionh/Preference-Allocation.svg?branch=master)](https://travis-ci.org/avisionh/Preference-Allocation)
 
 ### Collaborators
-[Avision Ho](https://github.com/avisionh)
-[Le Duong](https://github.com/ledu1993)
+
+- [Avision Ho](https://github.com/avisionh)
+- [Le Duong](https://github.com/ledu1993)
+
 
 # Update
 - A Shiny app is being built for this problem.

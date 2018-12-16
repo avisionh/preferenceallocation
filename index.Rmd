@@ -23,7 +23,7 @@ library(DT)
 # Set random number generator so so results are replicable
 set.seed(1)
 
-# Load data
+# Load data - note are moving up one directory
 utility_delegates <- read_csv(file = "data/dummy_student_preferences.csv")
 
 # Import source code
