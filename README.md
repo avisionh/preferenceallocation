@@ -27,6 +27,7 @@ in such a way that the total utility of all *x* people is maximised.
 - [x] Write an algorithm that automates the matching/mapping of one set to another set given pre-defined constraints.
 - [ ] Write effective functions, include error-trapping and -handling.
 - [ ] Build a Shiny app that makes this algorithm accessible to non-programmers.
+- [ ] Host the Shiny app on a public domain, [shinyapp.io](https://www.shinyapps.io/).
 - [ ] Demonstrate a consistent R coding and Git workflow usage.
 - [ ] Implement a CI/CD pipeline to robustly and continuously test whether the code works on different operating systems (OS) using [travis-ci](https://travis-ci.org/) and [Azure DevOps](https://azure.microsoft.com/en-gb/services/devops/).
 - [ ] Adopt an Agile project management approach using [Azure DevOps](https://azure.microsoft.com/en-gb/services/devops/) to capture and efficiently manage feature requests.
