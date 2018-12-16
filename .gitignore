@@ -2,7 +2,6 @@ packrat/lib*/
 .Rproj.user
 .Rhistory
 report.html
-slides.html
-slides.md
-slides.Rpres
+index.md
+index.Rpres
 
