@@ -10,7 +10,7 @@ ui <- dashboardPage(
   
   # Title and Skin
   title = "Preference Allocation",
-  skin = "green",
+  skin = "yellow",
   
   # Header
   header = dashboardHeader(
@@ -32,9 +32,9 @@ ui <- dashboardPage(
       
       # Subregion Report tab
       menuItem(
-        text = "Subregion Report",
+        text = "Report - Allocations",
         icon = icon(name = "list-ul"),
-        tabName = "report_subregion"
+        tabName = "report_allocations"
       )
       
     ) #sideMenu
@@ -50,15 +50,15 @@ ui <- dashboardPage(
         tabName = "info_guidance",
         
         box(
-          width = 7, status = "danger", solidHeader = TRUE,
+          width = 7, status = "warning", solidHeader = TRUE,
           
           # Welcome
           h2(icon("info"), "Welcome"), hr(),
           
           div(
             "Welcome to the R Shiny dashboard of Preference Allocations.",
-            p("This dashboard enables you to use the ", strong("iterartive preference"), " algorithm on your own data."),
-            p(strong("No responsibility will be taken by the author if misuse of this information is made."))
+            p("This dashboard enables you to use the ", em("iterative preference"), " algorithm on your own data."),
+            p(strong("No responsibility will be taken by the authors if misuse of this information is made."))
           ),
           
           # Using the app
@@ -68,7 +68,7 @@ ui <- dashboardPage(
             "Each of the tabs in the app are designed to do the following things:",
             tags$ul(
               tags$li("Navigate across different tabs by clicking on the options in the left-hand black vertical box."),
-              tags$li("The ", strong("title"), " tab generic information.")
+              tags$li("The ", strong("Guidance"), " tab contains information on the app's purpose, usage, data and construction.")
             )
           ),
           
@@ -83,7 +83,7 @@ ui <- dashboardPage(
         ), #box
         
         box(
-          width = 5, status = "danger", solidHeader = TRUE,
+          width = 5, status = "warning", solidHeader = TRUE,
           
           # Data Sources
           h2(icon("database"), "Data Sources"), hr(),
@@ -106,7 +106,9 @@ ui <- dashboardPage(
           
         ) #box
         
-      )
+      ) #tabItem
+      
+    ) #tabItems
   ) #dashboardBody
   
   
