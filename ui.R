@@ -148,7 +148,13 @@ ui <- dashboardPage(
           
         ) #box
         
+      ), #tabItem
+      
+      
+      tabItem(
+        tabName = "report_allocations"
       ) #tabItem
+      
       
     ) #tabItems
   ) #dashboardBody
