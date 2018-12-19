@@ -43,6 +43,21 @@ ui <- dashboardPage(
   
   # Body
   body = dashboardBody(
+    
+    # load CSS classes
+    tags$head(
+      # Include our custom CSS
+      includeCSS(path = "www/custom.css")
+    ),
+    
+    # MIT-license marking
+    tags$script(HTML('
+                    $(document).ready(function() {
+                    $("header").find("nav").append(\'<div class="license-class"> Licensed under the MIT License </div>\');
+                    })
+                    ')
+    ),
+    
     tabItems(
       
       # Content: Guidance Tab ---------------------------------------------------
