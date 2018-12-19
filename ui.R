@@ -14,7 +14,7 @@ ui <- dashboardPage(
   
   # Header
   header = dashboardHeader(
-    title = "Dashboard: Preference Allocation"
+    title = "Preference Allocation"
   ),
   
   # Sidebar
@@ -56,8 +56,8 @@ ui <- dashboardPage(
           h2(icon("info"), "Welcome"), hr(),
           
           div(
-            "Welcome to the R Shiny dashboard of Preference Allocations.",
-            p("This app enables you to use the ", em("iterative preference"), " algorithm on your own data."),
+            "Welcome to the R Shiny dashboard app for Preference Allocations!
+            This app enables you to use the ", em("iterative preference"), " algorithm on your own data.",
             p(strong("No responsibility will be taken by the authors if misuse of this information is made."))
           ), br(),
           
@@ -65,7 +65,7 @@ ui <- dashboardPage(
           h2(icon("bullseye"), "Purpose"), hr(),
           
           div(
-            "The problem being tackle here is of ", em("preference allocation/one-sided matching."), br(), br(),
+            "The problem being tackle here is of ", strong("preference allocation/one-sided matching."), br(), br(),
             
             "Consider that we have to assign ", em("m"), " people to ", em("n"), " sessions.", br(),
             tags$ul(
@@ -83,20 +83,20 @@ ui <- dashboardPage(
           h2(icon("calculator"), "Methodology"), hr(), 
           
           div(
-            "Each of the tabs in the app are designed to do the following things:",
-            tags$ul(
-              tags$li("Navigate across different tabs by clicking on the options in the left-hand black vertical box."),
-              tags$li("The ", strong("Guidance"), " tab contains information on the app's purpose, usage, data and construction.")
+            "The ", strong("iterative preference"), " algorithm involves a number of rounds.", br(), br(),
+            "Each round works as follows:",
+            tags$ol(
+              tags$li("Pick a delegate at random and assign them to their most preferred session."),
+              tags$li("If this session is full, then assign them to their next most preferred session."),
+              tags$li("Repeat the previous step until this randomly selected delegate is allocated to a free session."),
+              tags$li("Pick another delegate at random and repeat the previous steps until they are allocated to a free session."),
+              tags$li("Process continues until all delegates have been assigned to a free session.")
             )
           ), br(),
           
           # Further Information
           h2(icon("question-circle-o"), "Further Information"), hr(),
           div(
-            "Useful information about the Data Sources used, the 
-            Construction and Security of the app are placed in the box on 
-            the right hand side of this page.", br(), br(),
-            
             "To view the progress of this project, see the",
             a(href = "https://avisionh.visualstudio.com/Preference%20Allocation/_boards/board/t/Preference%20Allocation%20Team/Stories", 
               "Azure DevOps project Kanban board."), br(), br(),
