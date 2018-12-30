@@ -91,7 +91,7 @@ server <- function(input, output, session) {
       filtered_data_preference$data %>% 
         gather(key = "Talk", value = "Utility", 
                Session_01, Session_02, Session_03, Session_04) %>% 
-        # sum the values for each session, dividng
+        # sum the values for each session, divide by 10 to reduce utility values
         group_by(Talk) %>% 
         summarise(TotalUtility = sum(x = Utility/10, na.rm = TRUE)) %>% 
         # compute percentages
@@ -103,8 +103,20 @@ server <- function(input, output, session) {
   output$plot_data_preference <- renderPlot(
     expr = {
       ggplot(data = plot_data_preference(), mapping = aes(x = Talk, y = Proportion)) +
-        geom_col(fill = "red") +
-        geom_label(mapping = aes(label = TotalUtility), colour = "black")
+        geom_col(fill = cb_palette["cb_green"]) +
+        geom_label(mapping = aes(label = paste0("Count: ", TotalUtility)), colour = "black") +
+        labs(title = "Bar Chart: Delegates' Preferences",
+             caption = "The unit of measure, utility, is in ordinal units, where a utility 
+                        score of '4' means the talk is more preferred than a talk with
+                        a utility score of '3'.",
+             x = "Talk/Session", y = "Proportion") +
+        # hide grey plot background
+        theme(plot.title = element_text(face = "bold", hjust = 0.5),
+              plot.subtitle = element_text(face = "bold", hjust = 0.5),
+              panel.background = element_blank(),
+              axis.line = element_line(color = "black")) +
+        # add text wrapping for x-labels
+        scale_x_discrete(labels = function(x) str_wrap(x, width = 10))
     }
   )
   

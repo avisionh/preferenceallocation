@@ -21,6 +21,7 @@ library(tibble)
 library(tidyr)
 
 # data plotting
+library(stringr)
 library(ggplot2)
 
 # load external functions
@@ -34,6 +35,17 @@ message_warning <- "This app is currently under development and further features
 
 # set seed so we can replicate our results
 set.seed(1)
+
+# colour blind palette
+cb_palette <- c("cb_black" = "#000000",
+                "cb_grey" = "#999999",
+                "cb_orange" = "#E69F00",
+                "cb_light_blue" = "#56B4E9",
+                "cb_green" = "#009E73",
+                "cb_yellow" = "#F0E442",
+                "cb_dark_blue" = "#0072B2",
+                "cb_red" = "#D55E00",
+                "cb_pink" = "#CC79A7")
 
 
 # ----------------------------------------------------------------------- #
