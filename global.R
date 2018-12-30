@@ -14,6 +14,11 @@ library(shiny)
 library(shinydashboard)
 library(DT)
 
+# data wrangling
+library(dplyr)
+library(tibble)
+
+
 # load external functions
 source("scripts/functions.R")
 
@@ -52,3 +57,20 @@ colnames(utility_delegates) <- paste('Person', 1:n_delegates)
 
 # 5. generate room size limits for given number of delegates
 room_sizes <- c(0.2 * n_delegates, 0.3 * n_delegates ,0.1 * n_delegates, 0.4 * n_delegates)
+
+
+# ----------------------------------------------------------------------- #
+# Data: Wrangle -----------------------------------------------------------
+# ----------------------------------------------------------------------- #
+
+# wrangle utility_delegates into suitable format for presentation
+data_utility_delegates <- utility_delegates %>% 
+  # transpose the data so it is in a readable format
+  t() %>% 
+  # convert to dataframe so can name columns
+  as_tibble(rownames = "Delegate") %>% 
+  # rename the columns
+  rename(Session_01 = V1,
+         Session_02 = V2,
+         Session_03 = V3,
+         Session_04 = V4)
