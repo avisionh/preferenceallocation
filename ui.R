@@ -30,10 +30,17 @@ ui <- dashboardPage(
         tabName = "info_guidance"
       ),
       
-      # Subregion Report tab
+      # Distributions Report tab
+      menuItem(
+        text = "Report - Distributions",
+        icon = icon(name = "poll-h"),
+        tabName = "report_distribution"
+      ),
+      
+      # Allocations Report tab
       menuItem(
         text = "Report - Allocations",
-        icon = icon(name = "list-ul"),
+        icon = icon(name = "project-diagram"),
         tabName = "report_allocations"
       )
       
@@ -60,7 +67,10 @@ ui <- dashboardPage(
     
     tabItems(
       
-      # Content: Guidance Tab ---------------------------------------------------
+      # ----------------------------------------------------------------------- #
+      # Tab: Guidance -----------------------------------------------------------
+      # ----------------------------------------------------------------------- #
+      
       tabItem(
         tabName = "info_guidance",
         
@@ -165,6 +175,19 @@ ui <- dashboardPage(
         
       ), #tabItem
       
+      
+      # ----------------------------------------------------------------------- #
+      # Tab: Report - Distribution ----------------------------------------------
+      # ----------------------------------------------------------------------- #
+      
+      tabItem(
+        tabName = "report_distribution"
+      ), #tabItem
+      
+      
+      # ----------------------------------------------------------------------- #
+      # Tab: Report - Allocations -----------------------------------------------
+      # ----------------------------------------------------------------------- #
       
       tabItem(
         tabName = "report_allocations"
