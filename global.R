@@ -12,6 +12,7 @@
 # shiny app development and appearance
 library(shiny)
 library(shinydashboard)
+library(htmltools)
 library(DT)
 
 # data wrangling
@@ -30,6 +31,19 @@ message_warning <- "This app is currently under development and further features
 
 # set seed so we can replicate our results
 set.seed(1)
+
+# create for HTML table being generated in 'Report - Example' tab
+table_preferences_skeleton <- withTags(
+  table(class = "display",
+        thead(
+          # have merged cell headers
+          tr(th(colspan = 1, "Attendees", style = "text-align: center;"),
+             th(colspan = 4, "Parallel Sessions", style = "text-align: center;")),
+          # show column headers
+          tr(lapply(names(data_utility_delegates), th))
+        ) #thead
+  ) #table
+) #withTags
 
 
 # ----------------------------------------------------------------------- #
