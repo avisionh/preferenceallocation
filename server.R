@@ -34,7 +34,7 @@ server <- function(input, output, session) {
         return(filtered_data_preference$data <- data_utlity_delegates)
       } else {
         filtered_data_preference$data <- data_utility_delegates %>% 
-          filter(Delegate == input$select_person)
+          filter(Delegate %in% c(input$select_person))
       }
     } #handlerExpr
   ) #observeEvent
