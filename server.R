@@ -14,9 +14,8 @@ server <- function(input, output, session) {
   # ----------------------------------------------------------------------- #
   
   # 1. Button: Filter Delegate Preference Table ------------------------------------
-  
-  # DESC: Creates an feature that observes when a button is clicked by the user
-  #       and reacts by filtering the present_data_preference table by person selected
+  # DESC: Creates an feature that observes when the 'Filter' button is clicked and
+  #       reacts by filtering the present_data_preference table by person selected
   #       when this button is clicked.
   
   # 1.1 create reactiveValue to store state of data_utility_delegates when button is clicked
@@ -38,7 +37,23 @@ server <- function(input, output, session) {
       }
     } #handlerExpr
   ) #observeEvent
+  
 
+  # 2. Button: Clear Filter Delegate Preference Table -----------------------
+  # DESC: Creates a feature that observes when the 'Clear Filter' button is clicked
+  #       and reacts by clearing the filters/selectiosn on the present_data_prederence
+  #       table.
+  
+  observeEvent(
+    eventExpr = input$clear_filter,
+    handlerExpr = {filtered_data_preference$data <- data_utility_delegates}
+  )
+  
+
+  # 3. Output Table | Delegate Preferences ----------------------------------
+  # DESC: Outputs the filtered_utility_delegates reactiveValue data table for
+  #       the user to view.
+  
   # output delegates' preferences
   output$present_data_preference <- renderDataTable(
     expr = {
@@ -63,5 +78,35 @@ server <- function(input, output, session) {
       ) #datatable
     }
   ) #renderDataTable
+  
+  
+
+  # 4. Output Plot | Delegate Preferences -----------------------------------
+  # DESC: Outputs the filtered_utility_delegates reactiveValue data table as a
+  #       plot for users to view.
+  
+  # 4.1 reshape data for plotting
+  plot_data_preference <- reactive(
+    x = {
+      filtered_data_preference$data %>% 
+        gather(key = "Talk", value = "Utility", 
+               Session_01, Session_02, Session_03, Session_04) %>% 
+        # sum the values for each session, dividng
+        group_by(Talk) %>% 
+        summarise(TotalUtility = sum(x = Utility/10, na.rm = TRUE)) %>% 
+        # compute percentages
+        mutate(Proportion = TotalUtility/sum(TotalUtility))
+    }
+  )
+  
+  # 4.2 plot the data
+  output$plot_data_preference <- renderPlot(
+    expr = {
+      ggplot(data = plot_data_preference(), mapping = aes(x = Talk, y = Proportion)) +
+        geom_col(fill = "red") +
+        geom_label(mapping = aes(label = TotalUtility), colour = "black")
+    }
+  )
+  
 
 }

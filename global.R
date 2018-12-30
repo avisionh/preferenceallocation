@@ -18,7 +18,10 @@ library(DT)
 # data wrangling
 library(dplyr)
 library(tibble)
+library(tidyr)
 
+# data plotting
+library(ggplot2)
 
 # load external functions
 source("scripts/functions.R")

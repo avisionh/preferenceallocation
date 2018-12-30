@@ -187,16 +187,26 @@ ui <- dashboardPage(
           width = NULL,
           tabPanel(title = "Chart: Preference Distribution", height = "100%",
                    
-                   box(width = 9, status = "success", solidHeader = TRUE,
-                       dataTableOutput(outputId = "present_data_preference")),
+                   fluidRow(
+                     box(width = 9, status = "success", solidHeader = TRUE,
+                         dataTableOutput(outputId = "present_data_preference")),
+                     
+                     box(width = 3, status = "success", solidHeader = TRUE,
+                         h3("Filters"), hr(),
+                         # choose specific person
+                         selectInput(inputId = "select_person",
+                                     label = "Choose a specific person/people",
+                                     choices = NULL,
+                                     multiple = TRUE),
+                         actionButton(inputId = "clear_filter",
+                                      label = "Clear selection",
+                                      width = "100%"))
+                   ),
+                   fluidRow(
+                     box(width = 9, status = "success", solidHeader = TRUE,
+                         plotOutput(outputId = "plot_data_preference"))
+                   )
                    
-                   box(width = 3, status = "success", solidHeader = TRUE,
-                       h3("Filters"), hr(),
-                       # choose specific person
-                       selectInput(inputId = "select_person",
-                                   label = "Choose a specific person",
-                                   choices = NULL,
-                                   multiple = TRUE))
           ) #tabPanel
         ) #tabBox
       ), #tabItem
