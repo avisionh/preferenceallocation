@@ -32,19 +32,6 @@ message_warning <- "This app is currently under development and further features
 # set seed so we can replicate our results
 set.seed(1)
 
-# create for HTML table being generated in 'Report - Example' tab
-table_preferences_skeleton <- withTags(
-  table(class = "display",
-        thead(
-          # have merged cell headers
-          tr(th(colspan = 1, "Attendees", style = "text-align: center;"),
-             th(colspan = 4, "Parallel Sessions", style = "text-align: center;")),
-          # show column headers
-          tr(lapply(names(data_utility_delegates), th))
-        ) #thead
-  ) #table
-) #withTags
-
 
 # ----------------------------------------------------------------------- #
 # Data: Create ------------------------------------------------------------
@@ -88,3 +75,24 @@ data_utility_delegates <- utility_delegates %>%
          Session_02 = V2,
          Session_03 = V3,
          Session_04 = V4)
+
+
+# ----------------------------------------------------------------------- #
+# Table: Formats ----------------------------------------------------------
+# ----------------------------------------------------------------------- #
+
+# create for HTML table being generated in 'Report - Example' tab
+table_preferences_skeleton <- withTags(
+  table(class = "display",
+        thead(
+          # have merged cell headers
+          tr(th(colspan = 1, "Attendees", style = "text-align: center;"),
+             th(colspan = 4, "Parallel Sessions", style = "text-align: center;")),
+          # show column headers
+          tr(lapply(names(data_utility_delegates), th))
+        ) #thead
+  ) #table
+) #withTags
+
+# store delegates in a vector for user-selection
+vec_delegates <- data_utility_delegates$Delegate
