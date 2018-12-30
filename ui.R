@@ -181,7 +181,15 @@ ui <- dashboardPage(
       # ----------------------------------------------------------------------- #
       
       tabItem(
-        tabName = "report_example"
+        tabName = "report_example",
+        
+        tabBox(
+          width = NULL,
+          tabPanel(title = "Chart: Preference Distribution", height = "100%",
+                   box(width = 9, status = "success", solidHeader = TRUE,
+                       dataTableOutput(outputId = "present_data_preference"))
+                   ) #tabPanel
+        )
       ), #tabItem
       
       
