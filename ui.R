@@ -34,7 +34,7 @@ ui <- dashboardPage(
       menuItem(
         text = "Report - Distributions",
         icon = icon(name = "poll-h"),
-        tabName = "report_distribution"
+        tabName = "report_example"
       ),
       
       # Allocations Report tab
@@ -177,11 +177,11 @@ ui <- dashboardPage(
       
       
       # ----------------------------------------------------------------------- #
-      # Tab: Report - Distribution ----------------------------------------------
+      # Tab: Report - Example ---------------------------------------------------
       # ----------------------------------------------------------------------- #
       
       tabItem(
-        tabName = "report_distribution"
+        tabName = "report_example"
       ), #tabItem
       
       
