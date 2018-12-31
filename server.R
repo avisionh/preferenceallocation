@@ -119,6 +119,13 @@ server <- function(input, output, session) {
         scale_x_discrete(labels = function(x) str_wrap(x, width = 10))
     }
   )
+
   
+  # End Shiny Session -------------------------------------------------------
+  # DESC: Stops shiny app after closing the browser
+  
+  session$onSessionEnded(function() {
+    stopApp()
+  }) 
 
 }

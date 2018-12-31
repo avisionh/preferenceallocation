@@ -32,7 +32,7 @@ ui <- dashboardPage(
       
       # Distributions Report tab
       menuItem(
-        text = "Report - Distributions",
+        text = "Report - Example",
         icon = icon(name = "poll-h"),
         tabName = "report_example"
       ),
@@ -156,7 +156,7 @@ ui <- dashboardPage(
           h2(icon("database"), "Data Sources"), hr(),
           
           div(
-            "This app uses dummy-generated data.", br()
+            "This app uses dummy-generated data and your own data should you import it in.", br()
           ), hr(),
           
           # Construction
