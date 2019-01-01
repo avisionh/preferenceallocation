@@ -10,10 +10,14 @@
 server <- function(input, output, session) {
   
   # ----------------------------------------------------------------------- #
-  # Tab: Report - Example | Datatable ---------------------------------------
+  # Tab: Report - Example  --------------------------------------------------
   # ----------------------------------------------------------------------- #
   
-  # 1. Button: Filter Delegate Preference Table ------------------------------------
+
+  # 1. Sub-tab: Chart... -------------------------------------------------------
+  # -------------------------------------------------------------------------- #
+  
+  # i. Button | Filter delegate preference table ------------------------------------
   # DESC: Creates an feature that observes when the 'Filter' button is clicked and
   #       reacts by filtering the present_data_preference table by person selected
   #       when this button is clicked.
@@ -39,7 +43,7 @@ server <- function(input, output, session) {
   ) #observeEvent
   
 
-  # 2. Button: Clear Filter Delegate Preference Table -----------------------
+  # ii. Button | Clear filter delegate preference table -----------------------
   # DESC: Creates a feature that observes when the 'Clear Filter' button is clicked
   #       and reacts by clearing the filters/selectiosn on the present_data_prederence
   #       table.
@@ -50,7 +54,7 @@ server <- function(input, output, session) {
   )
   
 
-  # 3. Output Table | Delegate Preferences ----------------------------------
+  # iii. Output Table | Delegate preferences ----------------------------------
   # DESC: Outputs the filtered_utility_delegates reactiveValue data table for
   #       the user to view.
   
@@ -81,7 +85,7 @@ server <- function(input, output, session) {
   
   
 
-  # 4. Output Plot | Delegate Preferences -----------------------------------
+  # iv. Output Plot | Delegate preferences -----------------------------------
   # DESC: Outputs the filtered_utility_delegates reactiveValue data table as a
   #       plot for users to view.
   
@@ -119,6 +123,16 @@ server <- function(input, output, session) {
         scale_x_discrete(labels = function(x) str_wrap(x, width = 10))
     }
   )
+  
+
+  # 2. Sub-tab: Output... ------------------------------------------------------
+  # -------------------------------------------------------------------------- #
+
+
+  # i. Button: Run algorithm ------------------------------------------------
+
+  
+  
 
   
   # End Shiny Session -------------------------------------------------------
