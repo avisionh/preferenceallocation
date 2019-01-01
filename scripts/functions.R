@@ -69,9 +69,6 @@ func_iterative_preferences <- function(x, limits, with_replacement) {
   people <- seq(from = 1, to = n_people, by = 1)
   sample_people <- func_sample(x = people, n = n_people, replacement = with_replacement)
   
-  # take transpose of data
-  # x <- x %>% t()
-  
   # Run for each person
   for (i in 1:n_people) {
     
