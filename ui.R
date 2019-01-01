@@ -214,9 +214,9 @@ ui <- dashboardPage(
                    
                    fluidRow(
                      box(width = 9, status = "success", solidHeader = TRUE,
-                         dataTableOutput(outputId = "present_data_allocation")),
+                         dataTableOutput(outputId = "present_data_allocations")),
                      box(width = 3, status = "success", solidHeader = TRUE,
-                         h3("Control Pane"), hr{},
+                         h3("Control Pane"), hr(),
                          # button to run algorithm
                          actionButton(inputId = "run_algorithm",
                                       label = "Run algorithm",
