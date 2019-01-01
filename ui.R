@@ -185,6 +185,7 @@ ui <- dashboardPage(
         
         tabBox(
           width = NULL,
+          
           tabPanel(title = "Chart: Preference Distribution", height = "100%",
                    
                    fluidRow(
@@ -207,7 +208,20 @@ ui <- dashboardPage(
                          plotOutput(outputId = "plot_data_preference"))
                    )
                    
-          ) #tabPanel
+          ), #tabPanel
+          
+          tabPanel(title = "Output: Allocations of People to Sessions", height = "100%",
+                   
+                   fluidRow(
+                     box(width = 9, status = "success", solidHeader = TRUE,
+                         dataTableOutput(outputId = "present_data_allocation")),
+                     box(width = 3, status = "success", solidHeader = TRUE,
+                         h3("Control Pane"), hr{},
+                         # button to run algorithm
+                         actionButton(inputId = "run_algorithm",
+                                      label = "Run algorithm",
+                                      width = "100%"))
+                   ))
         ) #tabBox
       ), #tabItem
       
