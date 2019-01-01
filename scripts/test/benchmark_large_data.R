@@ -32,7 +32,7 @@ utility_delegates <- sapply(X = 1:n_delegates,
                             FUN = function(x) {
                               utility_delegates[x] <- sample.int(n = 4, size = 4) * 10
                             })
-utility_delegates <- tibble(utility_delegates)
+utility_delegates <- as.tibble(utility_delegates)
 
 # Name columns for each person
 colnames(utility_delegates) <- paste('Person', 1:n_delegates)
