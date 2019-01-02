@@ -30,10 +30,17 @@ ui <- dashboardPage(
         tabName = "info_guidance"
       ),
       
-      # Subregion Report tab
+      # Distributions Report tab
+      menuItem(
+        text = "Report - Example",
+        icon = icon(name = "poll-h"),
+        tabName = "report_example"
+      ),
+      
+      # Allocations Report tab
       menuItem(
         text = "Report - Allocations",
-        icon = icon(name = "list-ul"),
+        icon = icon(name = "project-diagram"),
         tabName = "report_allocations"
       )
       
@@ -60,7 +67,10 @@ ui <- dashboardPage(
     
     tabItems(
       
-      # Content: Guidance Tab ---------------------------------------------------
+      # ----------------------------------------------------------------------- #
+      # Tab: Guidance -----------------------------------------------------------
+      # ----------------------------------------------------------------------- #
+      
       tabItem(
         tabName = "info_guidance",
         
@@ -146,7 +156,7 @@ ui <- dashboardPage(
           h2(icon("database"), "Data Sources"), hr(),
           
           div(
-            "This app uses dummy-generated data.", br()
+            "This app uses dummy-generated data and your own data should you import it in.", br()
           ), hr(),
           
           # Construction
@@ -165,6 +175,46 @@ ui <- dashboardPage(
         
       ), #tabItem
       
+      
+      # ----------------------------------------------------------------------- #
+      # Tab: Report - Example ---------------------------------------------------
+      # ----------------------------------------------------------------------- #
+      
+      tabItem(
+        tabName = "report_example",
+        
+        tabBox(
+          width = NULL,
+          tabPanel(title = "Chart: Preference Distribution", height = "100%",
+                   
+                   fluidRow(
+                     box(width = 9, status = "success", solidHeader = TRUE,
+                         dataTableOutput(outputId = "present_data_preference")),
+                     
+                     box(width = 3, status = "success", solidHeader = TRUE,
+                         h3("Filters"), hr(),
+                         # choose specific person
+                         selectInput(inputId = "select_person",
+                                     label = "Choose a specific person/people",
+                                     choices = NULL,
+                                     multiple = TRUE),
+                         actionButton(inputId = "clear_filter",
+                                      label = "Clear selection",
+                                      width = "100%"))
+                   ),
+                   fluidRow(
+                     box(width = 9, status = "success", solidHeader = TRUE,
+                         plotOutput(outputId = "plot_data_preference"))
+                   )
+                   
+          ) #tabPanel
+        ) #tabBox
+      ), #tabItem
+      
+      
+      # ----------------------------------------------------------------------- #
+      # Tab: Report - Allocations -----------------------------------------------
+      # ----------------------------------------------------------------------- #
       
       tabItem(
         tabName = "report_allocations"
