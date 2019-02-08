@@ -231,7 +231,39 @@ ui <- dashboardPage(
       # ----------------------------------------------------------------------- #
       
       tabItem(
-        tabName = "report_allocations"
+        tabName = "report_allocations",
+        
+        tabBox(
+          width = NULL,
+          
+          tabPanel(title = "DUMMY TITLE", height = "100%",
+                   
+                   fluidRow(
+                     box(width = 9, status = "success", solidHeader = TRUE,
+                         dataTableOutput(outputId = "present_data_preference")),
+                     
+                     box(width = 3, status = "success", solidHeader = TRUE,
+                         h3("Filters"), hr(),
+                         # import data
+                         fileInput(inputId = "import_data",
+                                   label = "Import own data",
+                                   multiple = FALSE,
+                                   accept = c(".csv", ".txt"),
+                                   placeholder = "Awaiting user\'s data.."
+                         ),
+                         # choose specific person
+                         selectInput(inputId = "select_person",
+                                     label = "Choose a specific person/people",
+                                     choices = NULL,
+                                     multiple = TRUE),
+                         actionButton(inputId = "clear_filter",
+                                      label = "Clear selection",
+                                      width = "100%"))
+                   ),
+                   fluidRow(
+                     box(width = 9, status = "success", solidHeader = TRUE,
+                         plotOutput(outputId = "plot_data_preference"))
+                   )
       ) #tabItem
       
       
