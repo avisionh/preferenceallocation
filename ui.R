@@ -264,6 +264,8 @@ ui <- dashboardPage(
                      box(width = 9, status = "success", solidHeader = TRUE,
                          plotOutput(outputId = "plot_data_preference"))
                    )
+          ) #tabPanel
+        )#tabBox
       ) #tabItem
       
       
