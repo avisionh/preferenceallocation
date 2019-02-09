@@ -236,11 +236,11 @@ ui <- dashboardPage(
         tabBox(
           width = NULL,
           
-          tabPanel(title = "DUMMY TITLE", height = "100%",
+          tabPanel(title = "Output: Own Data", height = "100%",
                    
                    fluidRow(
                      box(width = 9, status = "success", solidHeader = TRUE,
-                         dataTableOutput(outputId = "present_data_preference")),
+                         dataTableOutput(outputId = "present_user_data")),
                      
                      box(width = 3, status = "success", solidHeader = TRUE,
                          h3("Filters"), hr(),
@@ -248,21 +248,31 @@ ui <- dashboardPage(
                          fileInput(inputId = "import_data",
                                    label = "Import own data",
                                    multiple = FALSE,
-                                   accept = c(".csv", ".txt"),
+                                   accept = c("text/csv", 
+                                              "text/comma-separated-values, text/plain",
+                                              ".csv"),
                                    placeholder = "Awaiting user\'s data.."
                          ),
+                         # Input: select seperator for distinguishing columns
+                         radioButtons(inputId = "import_seperator",
+                                      label = "Choose column seperator in imported file",
+                                      choices = c(Comma = ",",
+                                                  Semicolon = ";",
+                                                  Tab = "\t"),
+                                      selected = ","),
+                         
                          # choose specific person
-                         selectInput(inputId = "select_person",
+                         selectInput(inputId = "select_user_person",
                                      label = "Choose a specific person/people",
                                      choices = NULL,
                                      multiple = TRUE),
-                         actionButton(inputId = "clear_filter",
+                         actionButton(inputId = "clear_user_filter",
                                       label = "Clear selection",
                                       width = "100%"))
                    ),
                    fluidRow(
                      box(width = 9, status = "success", solidHeader = TRUE,
-                         plotOutput(outputId = "plot_data_preference"))
+                         plotOutput(outputId = "plot_user_data_preference"))
                    )
           ) #tabPanel
         )#tabBox

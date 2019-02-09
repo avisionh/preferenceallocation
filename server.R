@@ -199,7 +199,32 @@ server <- function(input, output, session) {
     }
   ) #renderDataTable
 
+
+  # ----------------------------------------------------------------------- #
+  # Tab: Report - Allocations  ----------------------------------------------
+  # ----------------------------------------------------------------------- #
   
+  
+  # 1. Sub-tab: Output... ------------------------------------------------------
+  # -------------------------------------------------------------------------- #
+  
+  # i. Output Table | Delegate preference --------------------------------------
+  # DESC: Creates a feature that outputs the user-inputted .csv or .txt file
+  
+  output$present_user_data <- renderDataTable(
+    expr = {
+      
+      # check if user has provided a value
+      req(input$import_data)
+      
+      user_data <- read_delim(file = input$import_data$datapath,
+                              delim = input$import_seperator)
+      
+      return(user_data)
+    }
+  )
+  
+    
   # End Shiny Session -------------------------------------------------------
   # DESC: Stops shiny app after closing the browser
   

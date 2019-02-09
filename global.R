@@ -16,6 +16,7 @@ library(htmltools)
 library(DT)
 
 # data wrangling
+library(readr)
 library(dplyr)
 library(tibble)
 library(tidyr)
