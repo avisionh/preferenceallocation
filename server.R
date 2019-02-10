@@ -22,14 +22,14 @@ server <- function(input, output, session) {
   #       reacts by filtering the present_data_preference table by person selected
   #       when this button is clicked.
   
-  # 1.1 create reactiveValue to store state of data_utility_delegates when button is clicked
+  # i.i create reactiveValue to store state of data_utility_delegates when button is clicked
   filtered_data_preference <- reactiveValues(data = data_utility_delegates)
   
-  # 1.2 pass through values for user to select from
+  # i.ii pass through values for user to select from
   updateSelectizeInput(session = session, inputId = "select_person",
                        choices = vec_delegates)
   
-  # 1.3 establish logic to filter the filtered_data_preference reactiveValue
+  # i.iii establish logic to filter the filtered_data_preference reactiveValue
   observeEvent(
     eventExpr = input$select_person,
     handlerExpr = {
@@ -58,8 +58,6 @@ server <- function(input, output, session) {
   # DESC: Outputs the filtered_data_preference reactiveValue data table for
   #       the user to view.
   
-  
-  
   # output delegates' preferences
   output$present_data_preference <- renderDataTable(
     expr = {
@@ -86,12 +84,11 @@ server <- function(input, output, session) {
   ) #renderDataTable
   
   
-
   # iv. Output Plot | Delegate preferences -----------------------------------
   # DESC: Outputs the filtered_utility_delegates reactiveValue data table as a
   #       plot for users to view.
   
-  # 4.1 reshape data for plotting
+  # iv.i reshape data for plotting
   plot_data_preference <- reactive(
     x = {
       filtered_data_preference$data %>% 
@@ -105,7 +102,7 @@ server <- function(input, output, session) {
     }
   )
   
-  # 4.2 plot the data
+  # iv.ii plot the data
   output$plot_data_preference <- renderPlot(
     expr = {
       ggplot(data = plot_data_preference(), mapping = aes(x = Talk, y = Proportion)) +
@@ -153,12 +150,11 @@ server <- function(input, output, session) {
   ) #observeEvent
   
   
-
-  # iii. Output Table | Allocations -----------------------------------------
+  # ii. Output Table | Allocations -----------------------------------------
   # DESC: Outputs the filtered_data_allocations reactiveValue data table for
   #       the user to view.
   
-  # i.i create reative to manipulate and store dataframe for outputting
+  # ii.i create reative to manipulate and store dataframe for outputting
   present_allocations <- reactive(
     x = {
       
@@ -178,7 +174,7 @@ server <- function(input, output, session) {
     }
   ) #reactive
   
-  # output delegates' preferences
+  # ii.ii output delegates' preferences
   output$present_data_allocations <- renderDataTable(
     expr = {
       datatable(
@@ -261,6 +257,7 @@ server <- function(input, output, session) {
       ) #datatable
     }
   ) #renderDataTable
+  
   
   # ii. Output Table | Room sizes --------------------------------------
   # DESC: Creates a feature that outputs the user-inputted .csv or .txt file
