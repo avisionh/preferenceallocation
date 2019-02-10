@@ -53,7 +53,8 @@ utility_delegates <- utility_delegates %>%
 # str(utility_delegates)
 
 # Generate room size limits for given number of delegates
-room_sizes <- c(0.2 * n_delegates, 0.3 * n_delegates ,0.1 * n_delegates, 0.4 * n_delegates)
+room_sizes <- data.frame(Room = c("Room_01","Room_02","Room_03","Room_04"),
+                         Size = c(0.2 * n_delegates, 0.3 * n_delegates ,0.1 * n_delegates, 0.4 * n_delegates))
 
 # Run interative preferences timed
 start_time <- Sys.time()
