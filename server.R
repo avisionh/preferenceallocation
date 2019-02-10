@@ -58,15 +58,17 @@ server <- function(input, output, session) {
   # DESC: Outputs the filtered_data_preference reactiveValue data table for
   #       the user to view.
   
+  
+  
   # output delegates' preferences
   output$present_data_preference <- renderDataTable(
     expr = {
         datatable(
         data = filtered_data_preference$data,
         # enable buttons and turn off rownames
-        extensions = c("Buttons", "FixedColumns"), rownames = FALSE, colnames = TRUE,
+        extensions = c("Buttons", "FixedColumns"), rownames = FALSE,
         # impose structure in form of 'merged' cells on table
-        container = table_preferences_skeleton,
+        container = table_preference_skeleton,
         # add strips to left and right of each cell
         class = "cell-border stripe",
         # customise datatable further
@@ -210,22 +212,73 @@ server <- function(input, output, session) {
   
   # i. Output Table | Delegate preference --------------------------------------
   # DESC: Creates a feature that outputs the user-inputted .csv or .txt file
+  #       for preference data.
   
   output$present_user_preference <- renderDataTable(
     expr = {
       
-      # check if user has provided a value
+      # i.i check if user has provided a value
       req(input$import_datapreference)
       
+      # i.ii read in imported preference data
       user_data <- read_delim(file = input$import_datapreference$datapath,
-                              delim = input$import_seperator)
+                              delim = input$import_seperatorpreference)
       
+      n_session <- ncol(user_data) - 1
+      
+      # i.ii create HTML preference table structure being generated i.iv
+      table_import_preference_skeleton <- withTags(
+        table(class = "display",
+              thead(
+                # have merged cell headers
+                tr(th(colspan = 1, "Attendees", style = "text-align: center;"),
+                   th(colspan = n_session, "Parallel Sessions", style = "text-align: center;")),
+                # show column headers
+                tr(lapply(names(user_data), th))
+              ) #thead
+        ) #table
+      ) #withTags
+      
+      # i.iv output interactive customised data table
       datatable(
         data = user_data,
         # enable buttons and turn off rownames
-        extensions = c("Buttons", "FixedColumns"), rownames = FALSE, colnames = TRUE,
+        extensions = c("Buttons", "FixedColumns"), rownames = FALSE,
         # impose structure in form of 'merged' cells on table
-        container = table_preferences_skeleton,
+        container = table_import_preference_skeleton,
+        # add strips to left and right of each cell
+        class = "cell-border stripe",
+        # customise datatable further
+        options = list(
+          # enable horizontal scrolling
+          scrollX = TRUE,
+          # enable vertical scrolling
+          scrollY = "30vh",
+          pageLength = 10,
+          # set the table control elements to be at top of table rather than bottom
+          dom = '<"top"rlip>t<"bottom">'
+        ) #list
+      ) #datatable
+    }
+  ) #renderDataTable
+  
+  # ii. Output Table | Room sizes --------------------------------------
+  # DESC: Creates a feature that outputs the user-inputted .csv or .txt file
+  #       for room size limits data.
+  
+  output$present_user_room <- renderDataTable(
+    expr = {
+      
+      # check if user has provided a value
+      req(input$import_dataroom)
+
+      user_room <- read_delim(file = input$import_dataroom$datapath,
+                              delim = input$import_seperatorroom)
+      
+      datatable(
+        data = user_room,
+        # enable buttons and turn off rownames
+        extensions = c("Buttons"), rownames = FALSE,
         # add strips to left and right of each cell
         class = "cell-border stripe",
         # customise datatable further

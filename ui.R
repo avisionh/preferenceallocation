@@ -253,8 +253,15 @@ ui <- dashboardPage(
                                    accept = c("text/csv", 
                                               "text/comma-separated-values, text/plain",
                                               ".csv"),
-                                   placeholder = "Awaiting user\'s data.."
-                         ),
+                                   placeholder = "Awaiting user\'s data.."),
+                         # Input: select seperator for distinguishing columns
+                         radioButtons(inputId = "import_seperatorpreference",
+                                      label = "Choose column seperator in imported file",
+                                      choices = c(Comma = ",",
+                                                  Semicolon = ";",
+                                                  Tab = "\t"),
+                                      selected = ","),
+                         
                          # import room sizes
                          fileInput(input = "import_dataroom",
                                    label = "Import own data on room size limits",
@@ -264,7 +271,7 @@ ui <- dashboardPage(
                                               ".csv"),
                                    placeholder = "Awaiting user\'s data.."),
                          # Input: select seperator for distinguishing columns
-                         radioButtons(inputId = "import_seperator",
+                         radioButtons(inputId = "import_seperatorroom",
                                       label = "Choose column seperator in imported file",
                                       choices = c(Comma = ",",
                                                   Semicolon = ";",
