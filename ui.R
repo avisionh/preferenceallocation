@@ -239,20 +239,30 @@ ui <- dashboardPage(
           tabPanel(title = "Output: Own Data", height = "100%",
                    
                    fluidRow(
-                     box(width = 9, status = "success", solidHeader = TRUE,
-                         dataTableOutput(outputId = "present_user_data")),
+                     box(width = 6, status = "success", solidHeader = TRUE,
+                         dataTableOutput(outputId = "present_user_preference")),
+                     box(width = 3, status = "success", solidHeader = TRUE,
+                         dataTableOutput(outputId = "present_user_room")),
                      
                      box(width = 3, status = "success", solidHeader = TRUE,
                          h3("Filters"), hr(),
-                         # import data
-                         fileInput(inputId = "import_data",
-                                   label = "Import own data",
+                         # import preference data
+                         fileInput(inputId = "import_datapreference",
+                                   label = "Import own data on attendees\' preferences",
                                    multiple = FALSE,
                                    accept = c("text/csv", 
                                               "text/comma-separated-values, text/plain",
                                               ".csv"),
                                    placeholder = "Awaiting user\'s data.."
                          ),
+                         # import room sizes
+                         fileInput(input = "import_dataroom",
+                                   label = "Import own data on room size limits",
+                                   multiple = FALSE,
+                                   accept = c("text/csv", 
+                                              "text/comma-separated-values, text/plain",
+                                              ".csv"),
+                                   placeholder = "Awaiting user\'s data.."),
                          # Input: select seperator for distinguishing columns
                          radioButtons(inputId = "import_seperator",
                                       label = "Choose column seperator in imported file",

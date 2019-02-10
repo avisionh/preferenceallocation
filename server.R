@@ -211,16 +211,34 @@ server <- function(input, output, session) {
   # i. Output Table | Delegate preference --------------------------------------
   # DESC: Creates a feature that outputs the user-inputted .csv or .txt file
   
-  output$present_user_data <- renderDataTable(
+  output$present_user_preference <- renderDataTable(
     expr = {
       
       # check if user has provided a value
-      req(input$import_data)
+      req(input$import_datapreference)
       
-      user_data <- read_delim(file = input$import_data$datapath,
+      user_data <- read_delim(file = input$import_datapreference$datapath,
                               delim = input$import_seperator)
       
-      return(user_data)
+      datatable(
+        data = user_data,
+        # enable buttons and turn off rownames
+        extensions = c("Buttons", "FixedColumns"), rownames = FALSE, colnames = TRUE,
+        # impose structure in form of 'merged' cells on table
+        container = table_preferences_skeleton,
+        # add strips to left and right of each cell
+        class = "cell-border stripe",
+        # customise datatable further
+        options = list(
+          # enable horizontal scrolling
+          scrollX = TRUE,
+          # enable vertical scrolling
+          scrollY = "30vh",
+          pageLength = 10,
+          # set the table control elements to be at top of table rather than bottom
+          dom = '<"top"rlip>t<"bottom">'
+        ) #list
+      ) #datatable
     }
   )
   
