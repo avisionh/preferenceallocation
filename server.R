@@ -22,14 +22,14 @@ server <- function(input, output, session) {
   #       reacts by filtering the present_data_preference table by person selected
   #       when this button is clicked.
   
-  # 1.1 create reactiveValue to store state of data_utility_delegates when button is clicked
+  # i.i create reactiveValue to store state of data_utility_delegates when button is clicked
   filtered_data_preference <- reactiveValues(data = data_utility_delegates)
   
-  # 1.2 pass through values for user to select from
+  # i.ii pass through values for user to select from
   updateSelectizeInput(session = session, inputId = "select_person",
                        choices = vec_delegates)
   
-  # 1.3 establish logic to filter the filtered_data_preference reactiveValue
+  # i.iii establish logic to filter the filtered_data_preference reactiveValue
   observeEvent(
     eventExpr = input$select_person,
     handlerExpr = {
@@ -64,9 +64,9 @@ server <- function(input, output, session) {
         datatable(
         data = filtered_data_preference$data,
         # enable buttons and turn off rownames
-        extensions = c("Buttons", "FixedColumns"), rownames = FALSE, colnames = TRUE,
+        extensions = c("Buttons", "FixedColumns"), rownames = FALSE,
         # impose structure in form of 'merged' cells on table
-        container = table_preferences_skeleton,
+        container = table_preference_skeleton,
         # add strips to left and right of each cell
         class = "cell-border stripe",
         # customise datatable further
@@ -84,12 +84,11 @@ server <- function(input, output, session) {
   ) #renderDataTable
   
   
-
   # iv. Output Plot | Delegate preferences -----------------------------------
   # DESC: Outputs the filtered_utility_delegates reactiveValue data table as a
   #       plot for users to view.
   
-  # 4.1 reshape data for plotting
+  # iv.i reshape data for plotting
   plot_data_preference <- reactive(
     x = {
       filtered_data_preference$data %>% 
@@ -103,7 +102,7 @@ server <- function(input, output, session) {
     }
   )
   
-  # 4.2 plot the data
+  # iv.ii plot the data
   output$plot_data_preference <- renderPlot(
     expr = {
       ggplot(data = plot_data_preference(), mapping = aes(x = Talk, y = Proportion)) +
@@ -151,12 +150,11 @@ server <- function(input, output, session) {
   ) #observeEvent
   
   
-
-  # iii. Output Table | Allocations -----------------------------------------
+  # ii. Output Table | Allocations -----------------------------------------
   # DESC: Outputs the filtered_data_allocations reactiveValue data table for
   #       the user to view.
   
-  # i.i create reative to manipulate and store dataframe for outputting
+  # ii.i create reative to manipulate and store dataframe for outputting
   present_allocations <- reactive(
     x = {
       
@@ -176,7 +174,7 @@ server <- function(input, output, session) {
     }
   ) #reactive
   
-  # output delegates' preferences
+  # ii.ii output delegates' preferences
   output$present_data_allocations <- renderDataTable(
     expr = {
       datatable(
@@ -199,7 +197,102 @@ server <- function(input, output, session) {
     }
   ) #renderDataTable
 
+
+  # ----------------------------------------------------------------------- #
+  # Tab: Report - Allocations  ----------------------------------------------
+  # ----------------------------------------------------------------------- #
   
+  
+  # 1. Sub-tab: Output... ------------------------------------------------------
+  # -------------------------------------------------------------------------- #
+  
+  # i. Output Table | Delegate preference --------------------------------------
+  # DESC: Creates a feature that outputs the user-inputted .csv or .txt file
+  #       for preference data.
+  
+  output$present_user_preference <- renderDataTable(
+    expr = {
+      
+      # i.i check if user has provided a value
+      req(input$import_datapreference)
+      
+      # i.ii read in imported preference data
+      user_data <- read_delim(file = input$import_datapreference$datapath,
+                              delim = input$import_seperatorpreference)
+      
+      n_session <- ncol(user_data) - 1
+      
+      # i.ii create HTML preference table structure being generated i.iv
+      table_import_preference_skeleton <- withTags(
+        table(class = "display",
+              thead(
+                # have merged cell headers
+                tr(th(colspan = 1, "Attendees", style = "text-align: center;"),
+                   th(colspan = n_session, "Parallel Sessions", style = "text-align: center;")),
+                # show column headers
+                tr(lapply(names(user_data), th))
+              ) #thead
+        ) #table
+      ) #withTags
+      
+      # i.iv output interactive customised data table
+      datatable(
+        data = user_data,
+        # enable buttons and turn off rownames
+        extensions = c("Buttons", "FixedColumns"), rownames = FALSE,
+        # impose structure in form of 'merged' cells on table
+        container = table_import_preference_skeleton,
+        # add strips to left and right of each cell
+        class = "cell-border stripe",
+        # customise datatable further
+        options = list(
+          # enable horizontal scrolling
+          scrollX = TRUE,
+          # enable vertical scrolling
+          scrollY = "30vh",
+          pageLength = 10,
+          # set the table control elements to be at top of table rather than bottom
+          dom = '<"top"rlip>t<"bottom">'
+        ) #list
+      ) #datatable
+    }
+  ) #renderDataTable
+  
+  
+  # ii. Output Table | Room sizes --------------------------------------
+  # DESC: Creates a feature that outputs the user-inputted .csv or .txt file
+  #       for room size limits data.
+  
+  output$present_user_room <- renderDataTable(
+    expr = {
+      
+      # check if user has provided a value
+      req(input$import_dataroom)
+
+      user_room <- read_delim(file = input$import_dataroom$datapath,
+                              delim = input$import_seperatorroom)
+      
+      datatable(
+        data = user_room,
+        # enable buttons and turn off rownames
+        extensions = c("Buttons"), rownames = FALSE,
+        # add strips to left and right of each cell
+        class = "cell-border stripe",
+        # customise datatable further
+        options = list(
+          # enable horizontal scrolling
+          scrollX = TRUE,
+          # enable vertical scrolling
+          scrollY = "30vh",
+          pageLength = 10,
+          # set the table control elements to be at top of table rather than bottom
+          dom = '<"top"rlip>t<"bottom">'
+        ) #list
+      ) #datatable
+    }
+  )
+  
+    
   # End Shiny Session -------------------------------------------------------
   # DESC: Stops shiny app after closing the browser
   

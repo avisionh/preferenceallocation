@@ -60,10 +60,11 @@ func_iterative_preferences <- function(x, limits, with_replacement) {
   n_sessions <- ncol(x) - 1
   
   # create dummy tibble for storing output
-  matchings <- tibble(PersonRowId = rep(x = -1, times = n_people), SessionPreferredColumnId = rep(x = "dummy", times = n_people))
+  matchings <- tibble(PersonRowId = rep(x = -1, times = n_people), 
+                      SessionPreferredColumnId = rep(x = "dummy", times = n_people))
   
   # convert limits from vector to tibble
-  limits <- limits %>% as.tibble()
+  limits <- limits[,2] %>% as.tibble()
   
   # generate vector of people and random sample from it
   people <- seq(from = 1, to = n_people, by = 1)
