@@ -185,6 +185,7 @@ ui <- dashboardPage(
         
         tabBox(
           width = NULL,
+          
           tabPanel(title = "Chart: Preference Distribution", height = "100%",
                    
                    fluidRow(
@@ -207,7 +208,20 @@ ui <- dashboardPage(
                          plotOutput(outputId = "plot_data_preference"))
                    )
                    
-          ) #tabPanel
+          ), #tabPanel
+          
+          tabPanel(title = "Output: Allocations of People to Sessions", height = "100%",
+                   
+                   fluidRow(
+                     box(width = 9, status = "success", solidHeader = TRUE,
+                         dataTableOutput(outputId = "present_data_allocations")),
+                     box(width = 3, status = "success", solidHeader = TRUE,
+                         h3("Control Pane"), hr(),
+                         # button to run algorithm
+                         actionButton(inputId = "run_algorithm",
+                                      label = "Run algorithm",
+                                      width = "100%"))
+                   ))
         ) #tabBox
       ), #tabItem
       
@@ -217,7 +231,69 @@ ui <- dashboardPage(
       # ----------------------------------------------------------------------- #
       
       tabItem(
-        tabName = "report_allocations"
+        tabName = "report_allocations",
+        
+        tabBox(
+          width = 9,
+          
+          tabPanel(title = "Output: Own Data", height = "100%",
+                   
+                   fluidRow(
+                     box(width = 9, status = "success", solidHeader = TRUE,
+                         dataTableOutput(outputId = "present_user_preference")),
+                     box(width = 3, status = "success", solidHeader = TRUE,
+                         dataTableOutput(outputId = "present_user_room"))
+                   ),
+                   fluidRow(
+                     box(width = 12, status = "success", solidHeader = TRUE,
+                         plotOutput(outputId = "plot_user_data_preference"))
+                   )
+                   
+          ) #tabPanel
+        ), #tabBox
+        
+        box(width = 3, status = "success", solidHeader = TRUE,
+            h3("Filters"), hr(),
+            # import preference data
+            fileInput(inputId = "import_datapreference",
+                      label = "Import own data on attendees\' preferences",
+                      multiple = FALSE,
+                      accept = c("text/csv", 
+                                 "text/comma-separated-values, text/plain",
+                                 ".csv"),
+                      placeholder = "Awaiting user\'s data.."),
+            # Input: select seperator for distinguishing columns
+            radioButtons(inputId = "import_seperatorpreference",
+                         label = "Choose column seperator in imported file",
+                         choices = c(Comma = ",",
+                                     Semicolon = ";",
+                                     Tab = "\t"),
+                         selected = ","),
+            
+            # import room sizes
+            fileInput(input = "import_dataroom",
+                      label = "Import own data on room size limits",
+                      multiple = FALSE,
+                      accept = c("text/csv", 
+                                 "text/comma-separated-values, text/plain",
+                                 ".csv"),
+                      placeholder = "Awaiting user\'s data.."),
+            # Input: select seperator for distinguishing columns
+            radioButtons(inputId = "import_seperatorroom",
+                         label = "Choose column seperator in imported file",
+                         choices = c(Comma = ",",
+                                     Semicolon = ";",
+                                     Tab = "\t"),
+                         selected = ","),
+            
+            # choose specific person
+            selectInput(inputId = "select_user_person",
+                        label = "Choose a specific person/people",
+                        choices = NULL,
+                        multiple = TRUE),
+            actionButton(inputId = "clear_user_filter",
+                         label = "Clear selection",
+                         width = "100%"))
       ) #tabItem
       
       

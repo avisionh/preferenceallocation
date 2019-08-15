@@ -16,6 +16,7 @@ library(htmltools)
 library(DT)
 
 # data wrangling
+library(readr)
 library(dplyr)
 library(tibble)
 library(tidyr)
@@ -96,8 +97,9 @@ data_utility_delegates <- utility_delegates %>%
 # Table: Formats ----------------------------------------------------------
 # ----------------------------------------------------------------------- #
 
-# create for HTML table being generated in 'Report - Example' tab
-table_preferences_skeleton <- withTags(
+# create for HTML preference table being generated in 'Report - Example'
+# and 'Report - Allocations' tabs
+table_preference_skeleton <- withTags(
   table(class = "display",
         thead(
           # have merged cell headers
@@ -108,6 +110,8 @@ table_preferences_skeleton <- withTags(
         ) #thead
   ) #table
 ) #withTags
+
+
 
 # store delegates in a vector for user-selection
 vec_delegates <- data_utility_delegates$Delegate
