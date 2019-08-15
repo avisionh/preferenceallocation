@@ -32,10 +32,22 @@ utility_delegates <- sapply(X = 1:n_delegates,
                             FUN = function(x) {
                               utility_delegates[x] <- sample.int(n = 4, size = 4) * 10
                             })
-utility_delegates <- data.frame(utility_delegates)
+utility_delegates <- as.tibble(utility_delegates)
 
 # Name columns for each person
 colnames(utility_delegates) <- paste('Person', 1:n_delegates)
+
+# Wrangle data in foramt suitable for function
+utility_delegates <- utility_delegates %>% 
+  # transpose the data so it is in a readable format
+  t() %>% 
+  # convert to dataframe so can name columns
+  as_tibble(rownames = "Delegate") %>% 
+  # rename the columns
+  rename(Session_01 = V1,
+         Session_02 = V2,
+         Session_03 = V3,
+         Session_04 = V4)
 
 # Check structure and object type of `utility_delegates`
 # str(utility_delegates)

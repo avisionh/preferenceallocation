@@ -10,10 +10,14 @@
 server <- function(input, output, session) {
   
   # ----------------------------------------------------------------------- #
-  # Tab: Report - Example | Datatable ---------------------------------------
+  # Tab: Report - Example  --------------------------------------------------
   # ----------------------------------------------------------------------- #
   
-  # 1. Button: Filter Delegate Preference Table ------------------------------------
+
+  # 1. Sub-tab: Chart... -------------------------------------------------------
+  # -------------------------------------------------------------------------- #
+  
+  # i. Button | Filter delegate preference table ------------------------------------
   # DESC: Creates an feature that observes when the 'Filter' button is clicked and
   #       reacts by filtering the present_data_preference table by person selected
   #       when this button is clicked.
@@ -39,7 +43,7 @@ server <- function(input, output, session) {
   ) #observeEvent
   
 
-  # 2. Button: Clear Filter Delegate Preference Table -----------------------
+  # ii. Button | Clear filter delegate preference table -----------------------
   # DESC: Creates a feature that observes when the 'Clear Filter' button is clicked
   #       and reacts by clearing the filters/selectiosn on the present_data_prederence
   #       table.
@@ -50,8 +54,8 @@ server <- function(input, output, session) {
   )
   
 
-  # 3. Output Table | Delegate Preferences ----------------------------------
-  # DESC: Outputs the filtered_utility_delegates reactiveValue data table for
+  # iii. Output Table | Delegate preferences ----------------------------------
+  # DESC: Outputs the filtered_data_preference reactiveValue data table for
   #       the user to view.
   
   # output delegates' preferences
@@ -81,7 +85,7 @@ server <- function(input, output, session) {
   
   
 
-  # 4. Output Plot | Delegate Preferences -----------------------------------
+  # iv. Output Plot | Delegate preferences -----------------------------------
   # DESC: Outputs the filtered_utility_delegates reactiveValue data table as a
   #       plot for users to view.
   
@@ -119,6 +123,81 @@ server <- function(input, output, session) {
         scale_x_discrete(labels = function(x) str_wrap(x, width = 10))
     }
   )
+  
+
+  # 2. Sub-tab: Output... ------------------------------------------------------
+  # -------------------------------------------------------------------------- #
+
+
+  # i. Button | Run algorithm ------------------------------------------------
+  # DESC: Creates a feature that observes when the 'Run algorithm' button is clicked
+  #       and reacts by running the 'func_iterative_preference' function on our dataset.
+  
+  # i.i create reactiveValue to store state of algorithm's output when button is clicked
+  filtered_data_allocations <- reactiveValues(data = NULL)
+  
+  # i.ii establish logic to filter the filtered_data_allocation reactiveValue
+  observeEvent(
+    eventExpr = input$run_algorithm,
+    handlerExpr = {
+      if(is.null(input$run_algorithm)) {
+        return(filtered_data_allocations$data)
+      } else {
+        filtered_data_allocations$data <- func_iterative_preferences(x = data_utility_delegates,
+                                                                     limits = room_sizes,
+                                                                     with_replacement = FALSE)
+      }
+    } #handlerExpr
+  ) #observeEvent
+  
+  
+
+  # iii. Output Table | Allocations -----------------------------------------
+  # DESC: Outputs the filtered_data_allocations reactiveValue data table for
+  #       the user to view.
+  
+  # i.i create reative to manipulate and store dataframe for outputting
+  present_allocations <- reactive(
+    x = {
+      
+      # store row IDs to join on
+      id_rows <- filtered_data_allocations$data[[1]]$PersonRowId
+      # create lookup table for joining
+      table_lookup <- data_utility_delegates[id_rows, ] %>% 
+        cbind(IdRow = id_rows) %>% 
+        mutate(IdRow = as.integer(as.character(IdRow)))
+      
+      data <- filtered_data_allocations$data[[1]] %>%
+        mutate(PersonRowId = as.integer(PersonRowId)) %>%
+        left_join(y = table_lookup, by = c("PersonRowId" = "IdRow")) %>%
+        select(Delegate, SessionPreferred = SessionPreferredColumnId)
+      
+      return(data)
+    }
+  ) #reactive
+  
+  # output delegates' preferences
+  output$present_data_allocations <- renderDataTable(
+    expr = {
+      datatable(
+        data = present_allocations(),
+        # enable buttons and turn off rownames
+        extensions = c("Buttons", "FixedColumns"), rownames = FALSE, colnames = TRUE,
+        # add strips to left and right of each cell
+        class = "cell-border stripe",
+        # customise datatable further
+        options = list(
+          # enable horizontal scrolling
+          scrollX = TRUE,
+          # enable vertical scrolling
+          scrollY = "30vh",
+          pageLength = 10,
+          # set the table control elements to be at top of table rather than bottom
+          dom = '<"top"rlip>t<"bottom">'
+        ) #list
+      ) #datatable
+    }
+  ) #renderDataTable
 
   
   # End Shiny Session -------------------------------------------------------

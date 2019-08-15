@@ -54,47 +54,49 @@ func_sample <- function(x, n, replacement) {
   # 2. 'limits' | (tibble/dataframe) Maximum capacity of each session
 func_iterative_preferences <- function(x, limits, with_replacement) {
   
-  # create empty list for storing output
-  matchings <- list()
+  # get number of people
+  n_people <- nrow(x)
+  # get number of session columns
+  n_sessions <- ncol(x) - 1
+  
+  # create dummy tibble for storing output
+  matchings <- tibble(PersonRowId = rep(x = -1, times = n_people), SessionPreferredColumnId = rep(x = "dummy", times = n_people))
   
   # convert limits from vector to tibble
   limits <- limits %>% as.tibble()
   
-  # get number of people
-  n_people <- ncol(x)
   # generate vector of people and random sample from it
   people <- seq(from = 1, to = n_people, by = 1)
   sample_people <- func_sample(x = people, n = n_people, replacement = with_replacement)
   
-  # take transpose of data
-  x <- x %>% t()
-  
   # Run for each person
-  for (i in 1:nrow(x)) {
+  for (i in 1:n_people) {
     
     # choose i-th person in random sample of people
     select_person <- x[sample_people[i], ]
     
     # Run for each preference if their session is full
-    for (j in 1:ncol(x)) {
+    for (j in 1:n_sessions) {
       
       # n-th largest value for selected person
-      nth_most_preferred <- func_nth_largest(x = select_person, n = j)
+      nth_most_preferred <- func_nth_largest(x = select_person[, 2:(n_sessions + 1)] %>% t(), n = j)
       
       # return column number with n-th most preferred session
-      preferred_session <- which(select_person == nth_most_preferred)[[1]]
+      # note: subtract one since need to account for column of delegates' name
+      preferred_session <- which(select_person == nth_most_preferred) - 1
       
       # check if preferred session is available
       if(limits[preferred_session,] > 0) {
         
         # assign person number to session number
-        matchings[[i]] <- c(rownames(x)[sample_people[i]], preferred_session)
+        matchings[i, ] <- c(rownames(x)[sample_people[i]], preferred_session)
         
         # remove a place from session that's been allocated
         limits[preferred_session, 1] <- limits[preferred_session, 1] - 1
         
         # if session is now full, assign 0 to all its preference values
-        if(limits[preferred_session,] == 0) {x[, preferred_session] <- 0}
+        # note: need to add 1 since 'x' dataframe has column for delegates
+        if(limits[preferred_session,] == 0) {x[, preferred_session + 1] <- 0}
         
         # break out of inner loop since as we have allocated person to session
         break
