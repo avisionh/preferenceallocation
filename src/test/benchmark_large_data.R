@@ -13,7 +13,7 @@ library(dplyr)
 library(tibble)
 
 # Load custom functions
-source('scripts/functions.R')
+source('src/functions.R')
 
 # Set seed so we can replicate our results
 set.seed(1)
