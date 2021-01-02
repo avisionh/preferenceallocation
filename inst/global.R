@@ -26,7 +26,7 @@ library(stringr)
 library(ggplot2)
 
 # load external functions
-source("scripts/functions.R")
+source("../src/functions.R")
 
 
 # ----------------------------------------------------------------------- #
