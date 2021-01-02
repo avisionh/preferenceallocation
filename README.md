@@ -1,5 +1,5 @@
 # Preference Allocation
-[![Travis-CI Build Status](https://travis-ci.org/avisionh/Preference-Allocation.svg?branch=master)](https://travis-ci.org/avisionh/Preference-Allocation)
+[![Travis-CI Build Status](https://travis-ci.org/avisionh/Preference-Allocation.svg?branch=master)](https://travis-ci.org/avisionh/Preference-Allocation) [![CodeFactor](https://www.codefactor.io/repository/github/avisionh/preferenceallocation/badge)](https://www.codefactor.io/repository/github/avisionh/preferenceallocation) [![License: MIT](https://img.shields.io/badge/License-MIT-informational.svg)](https://opensource.org/licenses/MIT)
 
 # Overview
 preferenceallocation explores methods for solving *preference allocation*/*one-sided matching* problems.
