@@ -19,7 +19,7 @@ set.seed(1)
 # Load in student preferences dummy data
 utility_delegates <- read_csv(file = "data/dummy_student_preferences.csv")
 utility_delegates <- utility_delegates %>% 
-  remove_rownames %>% 
+  remove_rownames() %>% 
   column_to_rownames(var = "X1")
 
 # Set colleges to have no preferences
