@@ -17,6 +17,7 @@ knitr::opts_chunk$set(echo = FALSE)
 library(matchingR)
 library(readr)
 library(dplyr)
+library(tidyr)
 library(tibble)
 library(DT)
 
@@ -24,10 +25,31 @@ library(DT)
 set.seed(1)
 
 # Load data - note are moving up one directory
-utility_delegates <- read_csv(file = "data/dummy_student_preferences.csv")
+utility_delegates <- read_csv(file = "../data/dummy_student_preferences.csv")
 
-# Import source code
-source("scripts/main.R")
+# Load functions
+source("../src/functions.R")
+```
+
+
+```{r data-prep, include=FALSE}
+utility_delegates <- utility_delegates %>% 
+  remove_rownames() %>% 
+  column_to_rownames(var = "X1")
+
+# Set colleges to have no preferences
+n_delegates <- ncol(utility_delegates)
+m_sessions <- nrow(utility_delegates)
+
+utility_sessions <- matrix(data = rep(x = 0, times = n_delegates*m_sessions),
+                           nrow = n_delegates, 
+                           ncol = m_sessions)
+utility_sessions <- utility_sessions %>% 
+  as_tibble() %>% 
+  rename(`College 1` = V1,
+         `College 2` = V2,
+         `College 3` = V3,
+         `College 4` = V4)
 ```
 
 ## Author's Note
@@ -121,8 +143,7 @@ The **Iterative Preference algorithm** involves a number of rounds:
 - For instance, we can see that for *Person 1*, they strictly prefer *Session 2* over *Session 1*, $u_{d_1}(2) > u_{d_1}(1)$.
 
 ```{r Data: delegate preferences}
-utility_delegates %>% 
-  datatable()
+datatable(data = utility_delegates)
 ```
 
 ***
@@ -132,8 +153,7 @@ utility_delegates %>%
 - We have given each session a preference of $0$ for each delegate. This is because sessions are indifferent over which delegates attend. 
 
 ```{r Data: session preferences}
-utility_sessions %>% 
-  datatable()
+datatable(data = utility_sessions)
 ```
 
 ***
@@ -145,15 +165,15 @@ utility_sessions %>%
 ## Analysis Approach 1 - Gale-Shapley {.smaller}
 In the code below, we will run the college admissions variant of the **Gale-Shapley algorithm**.
 
-``` {r Gale-Shapley Analysis, echo = TRUE, eval = FALSE}
-galeShapley.collegeAdmissions(
+``` {r Gale-Shapley Analysis, echo = TRUE}
+results_galeshapley <- galeShapley.collegeAdmissions(
   studentUtils = utility_delegates,
   collegeUtils = utility_sessions,
   slots = c(2, 1, 1, 2)
 )
 ```
 
-From running the algorithm we have the following allocation of delegates to sessions. `r results_galeshapley$matched.students %>% t()`. 
+From running the algorithm we have the following allocation of delegates to sessions. `r t(results_galeshapley$matched.students)`. 
 
 <div class="centered"; style="color:blue;">
 For instance, `Person 1` and `Person 4` are allocated to `r paste0("Session ", results_galeshapley$matched.students[1,])` and `r paste0("Session ", results_galeshapley$matched.students[4,])` respectively. 
@@ -169,40 +189,53 @@ rownames(results_galeshapley$matched.students) <- names
 colnames(results_galeshapley$matched.students) <- "Session Allocated"
 
 # show allocation
-results_galeshapley$matched.students %>% 
-  t()
+t(results_galeshapley$matched.students) 
 ```
 
 In the second output is the table of delegates' initial preferences to compare our allocations against.
 
 ```{r Gale-Shapley - delegate preferences}
-# show deleagate preferences
-utility_delegates %>% 
-  datatable()
+# show delegate preferences
+datatable(data = utility_delegates)
 ```
 
 
 ## Analysis Approach 2 - Iterative Preferences {.smaller}
 In the code below, we will run Fatma's suggested algorithm, **Iterative Preferences** against the initial preferences of delegates to check that our matchings are desirable.
 
-``` {r Iterative Preference - implementation, echo = TRUE, eval = FALSE}
-results_iterativepreference <- func_iterative_preferences(
-  x = utility_delegates, 
-  limits = c(2, 1, 1, 2), 
-  with_replacement = FALSE
+Before we do so, we need to reshape our data into tidy data format.
+```{r Iterative Preference - wrangle, include=FALSE}
+utility_delegates <- utility_delegates %>% 
+  rownames_to_column(var = "Session") %>% 
+  pivot_longer(cols = -"Session", 
+               names_to = "Person",
+               values_to = "Preference Score") %>% 
+  pivot_wider(id_cols = "Person",
+              names_from = "Session",
+              values_from = "Preference Score")
+room_sizes <- data.frame(Room = c("Room_01","Room_02","Room_03","Room_04"),
+                         Size = c(2, 1 , 1, 2))
+
+```
+
+
+``` {r Iterative Preference - implementation, echo = TRUE}
+results_iterativepreference <- func_iterative_preferences(x = utility_delegates, 
+                                                          limits = room_sizes, 
+                                                          with_replacement = FALSE
 )
 ```
 
-```{r (HIDDEN) Dataframe transformation, echo = FALSE, eval = TRUE}
-# convert to viewable format for slides
-results_iterativepreference[[1]] <- results_iterativepreference[[1]] %>% 
-  magrittr::set_colnames(paste0("Person ", results_iterativepreference[[2]]))
-rownames(results_iterativepreference[[1]]) <- c("Delegate", "Session Allocated")
+```{r Iterative Preference - helper, include = FALSE}
+matchings <- results_iterativepreference[[1]]
+sampling <- results_iterativepreference[[2]]
 ```
-From running the algorithm we have the following allocation of delegates to sessions. `r results_iterativepreference[[1]][2, ]`. 
+
+
+From running the algorithm we have the following allocation of delegates to sessions. `r matchings$SessionPreferredColumnId`. 
 
 <div class="centered"; style="color:blue;">
-For instance, `r results_iterativepreference[[1]] %>% select(1) %>% colnames()` and `r results_iterativepreference[[1]] %>% select(4) %>% colnames()` are allocated to `r paste0("Session ", results_iterativepreference[[1]][2, 1])` and `r paste0("Session ", results_iterativepreference[[1]][2, 4])` respectively. 
+For instance, `r pull(matchings[1,1])` and `r pull(matchings[4,1])` are allocated to `r paste0("Session ", pull(matchings[1,2]))` and `r paste0("Session ", pull(matchings[4,2]))` respectively. 
 </div>
 
 ## Algorithm's Output {.smaller}
@@ -210,23 +243,32 @@ In the first output is the matched allocations from using the **Iterative Prefer
 
 ```{r Iterative Preference - allocation}
 # show allocation
-results_iterativepreference[[1]][2, ]
+matchings <- matchings %>% 
+  rename("Session Allocated" = "SessionPreferredColumnId") %>% 
+  mutate(PersonRowId = paste0('Person ', PersonRowId)) %>% 
+  t() %>% 
+  as_tibble()
+colnames(matchings) <- matchings[1, ]
+matchings <- matchings[-1, ]
+datatable(data = matchings,
+          options = list(dom = 't'),
+          rownames = FALSE)
 ```
 
 In the second output is the random order of delegates that our algorithm used. 
 
 ```{r Iterative Preference - delegate sampling}
 # show delegate sampling
-paste0("Person ", results_iterativepreference[[2]])
-
+paste0("Person ", sampling)
 ```
 
 In the third output is the table of delegates' initial preferences to compare our allocations against.
 
 ```{r Iterative Preference - delegate preferences}
 # show delegate preferences
-utility_delegates %>% 
-  datatable()
+datatable(data = utility_delegates,
+          options = list(dom = 't'),
+          rownames = FALSE)
 ```
 
 # Hope you enjoyed the talk! :)

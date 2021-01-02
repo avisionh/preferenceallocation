@@ -11,7 +11,7 @@ library(dplyr)
 library(tibble)
 
 # Load custom functions
-source('scripts/functions.R')
+source('src/functions.R')
 
 # Set seed so we can replicate our results
 set.seed(1)
@@ -19,18 +19,18 @@ set.seed(1)
 # Load in student preferences dummy data
 utility_delegates <- read_csv(file = "data/dummy_student_preferences.csv")
 utility_delegates <- utility_delegates %>% 
-  remove_rownames %>% 
+  remove_rownames() %>% 
   column_to_rownames(var = "X1")
 
 # Set colleges to have no preferences
 n_delegates <- ncol(utility_delegates)
 m_sessions <- nrow(utility_delegates)
 
-utility_sessions <- matrix(data = rep(x = 0, times = n_delegates*m_sessions), 
-                          nrow = n_delegates, 
-                          ncol = m_sessions)
+utility_sessions <- matrix(data = rep(x = 0, times = n_delegates*m_sessions),
+                           nrow = n_delegates, 
+                           ncol = m_sessions)
 utility_sessions <- utility_sessions %>% 
-  as.tibble() %>% 
+  as_tibble() %>% 
   rename(`College 1` = V1,
          `College 2` = V2,
          `College 3` = V3,
@@ -45,9 +45,6 @@ results_galeshapley <- galeShapley.collegeAdmissions(
   collegeUtils = utility_sessions,
   slots = c(2, 1, 1, 2)
 )
-# Approach 2 - Iterative Preferences
-results_iterativepreference <- func_iterative_preferences(x = utility_delegates, limits = c(2, 1, 1, 2), with_replacement = FALSE)
- # convert matchings to dataframe
-results_iterativepreference[[1]] <- results_iterativepreference[[1]] %>% as.data.frame()
+
 
 
