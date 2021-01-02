@@ -56,7 +56,7 @@ utility_delegates <- utility_delegates %>%
 room_sizes <- data.frame(Room = c("Room_01","Room_02","Room_03","Room_04"),
                          Size = c(0.2 * n_delegates, 0.3 * n_delegates ,0.1 * n_delegates, 0.4 * n_delegates))
 
-# Run interative preferences timed
+# Run iterative preferences timed
 start_time <- Sys.time()
 results_iterativepreference <- func_iterative_preferences(x = utility_delegates, 
                                                           limits = room_sizes, 
