@@ -1,34 +1,32 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
 language: r
-sudo: required
-cache:
-  directories:
-  - "$TRAVIS_BUILD_DIR/packrat/src"
-  - "$TRAVIS_BUILD_DIR/packrat/lib"
-  packages: true
+r:
+  - release
 
-git:
-  depth: 3
+sudo: required
 
 env:
   global:
     - secure: GITHUB_PAT
 
-r_packages:
- - matchingR
- - readr
- - dplyr
- - tibble
- - DT
+cache:
+  directories:
+  - $HOME/.local/share/renv
+  - $TRAVIS_BUILD_DIR/renv/library
+  packages: true
 
 install:
-- R -e "0" --args --bootstrap-packrat
-
-before_script:
-  - chmod +x ./_build.sh
-  - chmod +x ./_deploy.sh
-
+  - Rscript -e "if (!requireNamespace('renv', quietly = TRUE)) install.packages('renv')"
+  - Rscript -e "renv::restore()"
+  
 script:
-  - ./_build.sh
-  - ./_deploy.sh
+  - nohup R --slave --no-restore -e 'shiny::runApp(port = 3000)' &
+  
+addons:
+  apt:
+    packages:
+      - libudunits2-dev
+      - libgdal-dev
+      - libgeos-dev
+      - libproj-dev
